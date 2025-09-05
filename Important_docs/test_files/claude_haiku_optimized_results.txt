@@ -1,0 +1,54 @@
+Question I would like to set up email services for my application. Is there a service that I can consume for this?:
+Response: {
+    "is_correct": true,
+    "reasoning": "The AI-generated answer not only includes the core information from the ground answer (availability of SendGrid service and need for API key request) but also provides significantly more valuable details. It expands on the basic answer by including:\n1. Clear overview of the service\n2. Availability information across cloud providers\n3. Specific features like SPF authentication, DKIM signing\n4. Detailed step-by-step instructions for getting started\n5. Direct links to documentation and the request form\n\nThe answer is well-structured, more comprehensive than the ground answer, and maintains complete accuracy while providing additional contextual information that would be valuable to users.",
+    "metrics": {
+        "relevance": 1.0,
+        "completeness": 0.95,
+        "accuracy": 1.0
+    },
+    "explanation_of_metrics": {
+        "relevance": "Perfect score as every piece of information is directly related to email service setup",
+        "completeness": "Nearly perfect score with comprehensive coverage, only missing minor details about API key management",
+        "accuracy": "Perfect score as all information matches the provided context and ground truth, with no incorrect statements"
+    }
+}
+
+Question I need access to this TFE project, can you have a look?:
+Response: {
+    "is_correct": true,
+    "reasoning": "The AI-generated answer not only includes the core information from the ground answer (the ServiceNow ticket link) but also provides a more comprehensive response with detailed steps and additional helpful information. It includes:
+    1. Preliminary steps (reading documentation)
+    2. Detailed process for submitting the request
+    3. Specific form fields to fill out
+    4. Post-submission process
+    5. Contact information for support
+    The answer is well-structured and provides more value than the minimal ground answer while maintaining accuracy. All information provided aligns with the context from the knowledge base.",
+    "metrics": {
+        "relevance": 1.0,
+        "completeness": 0.95,
+        "accuracy": 1.0
+    }
+}
+
+Question What are the supported AWS services?:
+Response: {
+    "is_correct": true,
+    "reasoning": "The AI-generated answer not only matches all the services mentioned in the ground answer (EC2, SQL Server (IaaS), RDS, EFS/FSX, S3) but also provides additional valuable information:
+    1. It includes more detail about the backup types supported for each service
+    2. It correctly mentions DynamoDB as a roadmap item
+    3. It provides relevant source links for documentation and service request forms
+    4. The information is well-structured and organized with proper formatting
+    5. All services mentioned are accurately represented according to the context provided",
+    "metrics": {
+        "relevance": 1.0,
+        "completeness": 1.0,
+        "accuracy": 1.0
+    },
+    "explanation_of_metrics": {
+        "relevance": "Perfect score as all information provided is directly related to AWS supported services and includes relevant supporting links",
+        "completeness": "Perfect score as it includes all services from ground answer plus additional useful context about backup types and future roadmap items",
+        "accuracy": "Perfect score as all service information matches exactly with the provided context and ground truth"
+    }
+}
+

@@ -1,0 +1,157 @@
+Question I would like to set up email services for my application. Is there a service that I can consume for this?:
+Response: {
+    "is_correct": true,
+    "reasoning": "The AI-generated answer is more comprehensive than the ground answer and provides additional valuable information while maintaining accuracy. It correctly identifies SendGrid as the email service offered by Cloud Engineering and includes the following improvements:\n1. Provides clear organization with sections\n2. Lists specific features (SPF, DKIM, DMARC)\n3. Includes availability information\n4. Provides the exact ServiceNow form link for requesting access\n5. Includes a reference to documentation\nWhile the ground answer captures the basic information, the AI response gives a more complete picture that would be more helpful to users.",
+    "metrics": {
+        "relevance": 1.0,
+        "completeness": 0.95,
+        "accuracy": 1.0
+    },
+    "explanation_of_metrics": {
+        "relevance": "Perfect score as all information provided is directly related to the email service question",
+        "completeness": "Near perfect score as it covers all aspects plus additional useful information. Minor deduction as it could have mentioned the approval process timeline",
+        "accuracy": "Perfect score as all information provided matches the context and is factually correct"
+    }
+}
+
+Question I need access to this TFE project, can you have a look?:
+Response: {
+    "is_correct": true,
+    "reasoning": "The AI-generated answer not only includes the essential information from the ground answer (the ServiceNow ticket link) but also provides additional valuable context and a more comprehensive guide. The answer:
+    1. Properly directs users to submit a ServiceNow ticket
+    2. Includes the correct link for new TFE project requests
+    3. Adds value by providing additional context about TFE access and planning documentation
+    4. Includes alternative options (like requesting access to existing teams)
+    5. Provides contact information for further assistance
+    6. Structures the information in a clear, step-by-step format
+    The answer goes beyond the minimal response while maintaining accuracy and including all critical information from the ground answer.",
+    "metrics": {
+        "relevance": 1.0,
+        "completeness": 0.95,
+        "accuracy": 1.0
+    }
+}
+
+The metrics are justified as follows:
+- Relevance: 1.0 - The answer directly addresses the question about TFE project access and provides appropriate solutions
+- Completeness: 0.95 - The answer includes all necessary information and adds helpful context, though it could potentially include information about expected processing times
+- Accuracy: 1.0 - All provided information, including links and processes, matches the context and ground answer perfectly
+
+Question What are the supported AWS services?:
+Response: {
+    "is_correct": true,
+    "reasoning": "The AI-generated answer not only matches all the AWS services mentioned in the ground answer (EC2, SQL Server IaaS, RDS, EFS/FSX, S3) but also provides additional valuable information:
+    1. It includes the backup types/capabilities for each service
+    2. It mentions DynamoDB as a roadmap item
+    3. It provides relevant ServiceNow form links for AWS-related requests
+    4. The answer is well-structured with clear formatting
+    5. All information is accurately sourced from the provided context
+    The answer goes beyond the basic list in the ground answer to provide a more comprehensive and useful response while maintaining complete accuracy.",
+    "metrics": {
+        "relevance": 1.0,
+        "completeness": 1.0,
+        "accuracy": 1.0
+    }
+}
+
+Question Are there any Azure services that will be supported at a later point?:
+Response: {
+    "is_correct": true,
+    "reasoning": "The AI-generated answer not only covers all the services mentioned in the ground answer (Azure PostgreSQL, Cosmos DB, Azure MySQL) but also provides additional valuable information such as specific timelines and includes other services like Azure Blob. The answer is well-structured, includes direct links to sources, and provides more comprehensive details about the future support timeline for each service. The answer even goes beyond the ground answer by mentioning specific implementation details like 'immutable backups' and their respective target dates. The inclusion of ServiceNow reference links for support requests adds practical value to the response.",
+    "metrics": {
+        "relevance": 1.0,
+        "completeness": 1.0,
+        "accuracy": 1.0
+    },
+    "explanation_of_metrics": {
+        "relevance": "Perfect score as all information directly addresses the question about future Azure service support",
+        "completeness": "Perfect score as it includes all services from ground answer plus additional relevant services and implementation details",
+        "accuracy": "Perfect score as all mentioned services and dates align with the provided context and ground answer"
+    }
+}
+
+Question What is the BaaS architecture for a Dedicated subscription?:
+Response: {
+    "is_correct": false,
+    "reasoning": "The AI-generated answer and the ground answer are describing completely different aspects of BaaS architecture. The ground answer specifically focuses on backup scheduling and retention policies (transaction logs, regular backups, and weekly backups with their respective timing and retention periods), while the AI-generated answer describes the infrastructure components (Resource Groups, Storage Accounts, etc.). While the AI's answer is detailed and based on the context provided, it does not address the specific backup scheduling and retention details that were given in the ground answer. This indicates a potential misunderstanding of what aspect of the BaaS architecture was being asked about.",
+    "metrics": {
+        "relevance": 0.7,
+        "completeness": 0.3,
+        "accuracy": 0.5
+    }
+}
+
+Additional Notes on Metrics:
+- Relevance (0.7): While the answer provides valid information about BaaS architecture, it misses the specific backup scheduling aspects that were asked for.
+- Completeness (0.3): The answer fails to include any information about backup schedules and retention periods, which were central to the ground answer.
+- Accuracy (0.5): The information provided is technically accurate based on the context, but it doesn't match the expected answer about backup schedules and retention policies.
+
+The discrepancy between the AI's answer and the ground answer suggests either:
+1. Missing context about backup schedules in the provided materials
+2. The AI focused on infrastructure aspects rather than operational aspects of the BaaS architecture
+3. The question might need to be more specific about which aspect of the BaaS architecture is being asked about
+
+Question Is there a RACI for this service?:
+Response: {
+    "is_correct": false,
+    "reasoning": "The AI-generated answer is significantly off-track from the ground answer. While it provides a comprehensive list of ServiceNow forms, it completely misses the actual RACI matrix information that was asked for in the question. The ground answer clearly outlines the RACI structure for the BaaS service, detailing specific roles and responsibilities for the BaaS Platform Team, D&T Product Owner, Business Product Owner, and GCSO. The AI instead provided information about service request forms, which wasn't relevant to the question about RACI. The response should have focused on the organizational responsibility matrix rather than listing ServiceNow links.",
+    "metrics": {
+        "relevance": 0.1,
+        "completeness": 0.0,
+        "accuracy": 0.0
+    },
+    "explanation_of_metrics": {
+        "relevance": "Scored 0.1 because while it attempts to provide service-related information, it completely misses the RACI matrix focus",
+        "completeness": "Scored 0.0 because it provides none of the RACI information that was present in the ground answer",
+        "accuracy": "Scored 0.0 because the information provided, while potentially useful in other contexts, is entirely incorrect for answering the specific question about RACI"
+    }
+}
+
+Question What is the SLA for a restoration request?:
+Response: {
+    "is_correct": false,
+    "reasoning": "The AI-generated answer failed to provide the specific SLA timeframes that were clearly available in the context. Instead of providing the detailed SLA breakdown for both Production and Non-Production applications across different tiers, it only provided a form link and suggested seeking more information. The ground answer correctly specifies that Production apps have SLAs ranging from 1 hour (Tier 1) to 1+ days (Tiers 3-4), and non-production apps range from 1 business day (Tier 1) to 1+ business days (Tiers 2-4). This information was available in the SharePoint content and should have been included in the answer.",
+    "metrics": {
+        "relevance": 0.4,
+        "completeness": 0.2,
+        "accuracy": 0.3
+    }
+}
+
+The metrics are justified as follows:
+- Relevance (0.4): While the answer provided a relevant form link for restoration requests, it failed to provide the core information that was asked for.
+- Completeness (0.2): The answer is significantly incomplete as it omits all the specific SLA timeframes that were available in the context.
+- Accuracy (0.3): The information provided (the form link) is accurate, but the statement about SLA details not being explicitly mentioned is incorrect as they were clearly present in the context.
+
+Question What are the latest changes that happened to the tagging?:
+Response: {
+    "is_correct": false,
+    "reasoning": "While the AI-generated answer provides some useful information about tagging changes, it has several discrepancies when compared to the ground answer:
+    1. It doesn't mention the specific revision number (4.5) or the exact date (May 15, 2025)
+    2. It doesn't explicitly state that the four tags must exactly match their corresponding values in the APM platform
+    3. It includes additional information about retired and unchanged tags that isn't in the ground answer
+    4. It includes various links and additional resources that, while potentially helpful, weren't part of the core answer about the latest changes
+    5. The explanation about BusinessTower being called 'Managing Organization' in the APM system might be misleading without proper context about the exact matching requirement",
+    "metrics": {
+        "relevance": 0.8,
+        "completeness": 0.6,
+        "accuracy": 0.7
+    }
+}
+
+The metrics are justified as follows:
+- Relevance (0.8): The answer is largely relevant to the question about tagging changes, but includes some tangential information
+- Completeness (0.6): Misses some critical information from the ground answer (revision number, exact date, explicit matching requirements) while including extra information
+- Accuracy (0.7): While the information provided is mostly accurate, it lacks the precision of the ground answer and could potentially mislead users about the exact matching requirements
+
+Question What is CloudHealth and tell me more about its capabilities.:
+Response: {
+    "is_correct": false,
+    "reasoning": "While the AI-generated answer captures the basic functionality of CloudHealth and includes helpful additional information about access requests and resources, it misses several key points from the ground answer that are important for users to understand:\n1. It doesn't mention that there is no cost for teams to use CloudHealth\n2. It omits the important limitation regarding amortized cost display and the recommendation to use cloud providers' portals for this data\n3. It doesn't explicitly state that CloudHealth currently provides reports for Azure, AWS, and GCP\n4. It fails to mention the limitation that CloudHealth does not include shared Azure reallocation and AWS allocated fee costs\n\nThe AI answer does provide additional valuable information about how to request access and available resources, which is helpful but wasn't part of the ground answer. However, the omission of key limitations and cost-related information makes the answer incomplete from a technical accuracy standpoint.",
+    "metrics": {
+        "relevance": 0.8,
+        "completeness": 0.6,
+        "accuracy": 0.7
+    }
+}
+

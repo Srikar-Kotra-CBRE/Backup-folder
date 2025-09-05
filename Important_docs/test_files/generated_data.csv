@@ -1,0 +1,945 @@
+user_input,ground_truth,cleaned_output,ai_response,ai_time
+I would like to set up email services for my application. Is there a service that I can consume for this?,"Yes, Cloud Engineering offers a shared SendGrid service that can used for sending emails. You will need to submit a request to obtain an API key.","=== Confluence & SharePoint Results ===
+Content: # Overview If you require a service to allow sending email from your application, Cloud Engineering offers SendGrid as a Service. The platform is hosted in our Azure 2.0 shared Shared NonProd and Shared Prod subscriptions. # Availability * All cloud providers * All CBRE approved regions globally # Features * CBRE Enterprise Grade email delivery via cbre.com * SPF authentication * DKIM signing * DMARC validation
+Description: 
+Link: https://cbre-jira.atlassian.net/wiki/spaces/CLOUD/pages/39584092/Twilio+SendGrid+Enterprise+Mail
+---
+Content: 
+Description: 58
+# CHAPTER 2 *Cloud-native application challenges*
+## *2.4.4 Dealing with inconsistent data*
+Having stored data in a relational data store like PostgreSQL or a NoSQL approach like Redis doesn't solve the problem of having inconsistent data across different stores. Because these stores should be hidden away by the service API, you will need to have mechanisms to check that the data that the services are handling is consistent. In dis- tributed systems, it is quite common to talk about ""eventual consistency,"" meaning that eventually the system will be consistent. Having eventual consistency is better than not having consistency at all. For this example, we can build a simple check mechanism that once in a while (imagine once a day) checks for the accepted talks in the Agenda service to see if they have been approved in the Call for Proposals service. If there is an entry that the Call hasn't approved for the Proposal Service (C4P), then we can raise some alerts or send an email to the conference organizers (figure 2.27).
+<figure>
+<figure_type>DIAGRAM</figure_type>
+Figure 2.27 Consistency checks can run as CronJobs. We can execute checks against the application services on fixed intervals to make sure that the state is consistent. For example: (1) every day at midnight we query the Agenda Service (2) to verify that the published sessions are approved in the (3) Call For Proposals Service and a corresponding notification has been sent by the (4) Notifications Service.Title: Consistency Checks as CronJobs in Microservices Architecture
+The diagram illustrates a microservices architecture implementing consistency checks through CronJobs. The system consists of four main components: Agenda Service, Call for Proposals Service, Notifications Service, and a Consistency Checker pod. The workflow shows how the Consistency Checker queries the Agenda Service daily at midnight (step 1), verifies the published sessions against the Call for Proposals Service (steps 2-3), and uses the Notifications Service (step 4) to alert about any inconsistencies. Each service is represented as a container with its respective pod, demonstrating a containerized architecture. The system ensures eventual consistency by validating that approved sessions in the Agenda Service match the approvals in the Call for Proposals Service.
+</figure>
+In figure 2.27, we can see how a CronJob (1) will be executed every X period, depend- ing on how important it is for us to fix consistency problems. Then it will query the Agenda service public APIs (2) to check which accepted proposals are being listed and compare that with the Call for Proposals service approved list (3). Finally, if any incon- sistency is found, an email can be sent using the Notifications service public APIs (4).
+Think of the simple use case this application was designed for; what other checks would you need? One that immediately comes to mind is verifying that emails were sent correctly for Rejected and Approved proposals. For this use case, emails are really important, and we need to ensure those emails are sent to our accepted and rejected speakers.
+## *2.4.5 Understanding how the application is working*
+Distributed systems are complex beasts, and fully understanding how they work from day one can help you save time when things go wrong. This has pushed the monitor- ing, tracing, and telemetry communities hard to develop solutions that help us under- stand how things are working at any given time.
+**Licensed to David Thomas <dave8thomas@googlemail.com>**
+
+Link: https://cbre-jira.atlassian.net/wiki/pages/viewpageattachments.action?pageId=134352059&preview=%2F134352059%2F134319713%2FPlatform_Engineering_on_Kubernetes.pdf
+---
+
+=== ServiceNow Reference Links ===
+Content: ### **GCP Requests** Currently there is no dedicated form to request a GCP Project, or report GCP issues, please raise a General IT Request, with the following info: ### **Cloud Assistant Friendly Content** This content is intended to enhance the ingestion quality of the Cloud Assistant Bot, ensuring more accurate responses when processing SNOW form links
+Link: https://cbre-jira.atlassian.net/wiki/spaces/CLOUD/pages/39605931/Cloud+Platform+Request+Forms
+---
+Content: quality of the Cloud Assistant Bot, ensuring more accurate responses when processing SNOW form links
+
+| | |
+| - | - |
+| **Type** | **Form** *(link to description & use below)* |
+| AWS Account Request AWS Account Request form allows users to request new AWS accounts with required approvals. | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=e772a202dbd5505021d45fc4e29619e1 |
+| AWS Account Decommission Decommission existing AWS accounts C*urrently Only Non-prod, Dev and Sandbox supported* | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=9ce28d861b19de1458b54047b04bcb22 |
+| AWS Account Tags Update Update AWS Cloud Account Level Tags | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=c89fcc3f1b828654a3e4773bdc4bcb02 |
+| Request a new Azure Resource group Request a new Azure Resource Group (RG) | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=985693958714251053e174c6dabb35cd |
+| Cloud Assistance Azure & AWS Platform general support requests | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=9435de46db2a3704cdb9d2984b9619b2 |
+| Cloud Access Request This form is for requesting access to an existing AWS account or Azure Resource Group | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=f33b560adbea3704cdb9d2984b961987 |
+| Cloud Health read access form Request Read-only access to CloudHealth | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=a3d5e783db311c5009d03fd3e2961969 |
+| GCP Requests Currently there is no dedicated form to request a GCP Project, or report GCP issues, please raise a General IT Request | https://cbre.service-now.com/esc?id=sc\_cat\_item&table=sc\_cat\_item&sys\_id=a4d4eb563ce491803f4d47212e89e27a&searchTerm=General%20IT%20Request |
+| ECMP Tenancy Request from Request a new tenancy in Enterprise Container Management Platform (ECMP) | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=5a9e1f1a8723dd1053e174c6dabb352a |
+| ECMP Access Request Request access to ECMP | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=468fd76b87506d90dd59ba2e8bbb35d8 |
+| Modify ECMP Project Request an increase project quota in ECMP | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=f8cd43f01b39e950a14d844fdd4bcb50 |
+| ECMP Operations ECMP general support requests | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=d1229e96873af914cc57c88e8bbb35e9 |
+| New Terraform Enterprise Team Request a new TFE Team | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=2235c46e1b45069044b664abbc4bcb9e |
+| New Terraform Enterprise Project Request a new TFE Project | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=9d51dc401bdd8ad044b664abbc4bcbbb |
+| Terraform Enterprise Team Access Request access to an existing TFE Team | https://cbre.service-now.com/nav\_to.do?uri=%2Fcom.glideapp.servicecatalog\_cat\_item\_view.do%3Fv%3D1%26sysparm\_id%3D747ebbf21b6f825058b54047b04bcb8a%26sysparm\_link\_parent%3D5924d0c2dbf63b8ccdb9d2984b9619a2%26sysparm\_catalog%3De0d08b13c3330100c8b837659bba8fb4%26sysparm\_catalog\_view%3Dcatalog\_default%26sysparm\_view%3Dcatalog\_default |
+| BaaS Onboarding For initial onboarding requests to the BaaS platform | https://cbre.service-now.com/com.glideapp.servicecatalog\_cat\_item\_view.do?v=1&sysparm\_id=4fc54e1b874b96d880057666dabb357e |
+| BaaS Restoration Any restoration requests for the BaaS platform | https://cbre.service-now.com/com.glideapp.servicecatalog\_cat\_item\_view.do?v=1&sysparm\_id=4fc54e1b874b96d880057666dabb357e |
+| Sendgrid Sub User Request a Sub User on the CBE Sendgrid platform | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=dd27306a1b4296907e0b6287624bcb2d |
+| **\*General Identity Management Request** Use this form to register an application in Entra ID (Azure AD) for Single Sign-On (SSO) | https://cbre.service-now.com/esc?id=ep\_sc\_cat\_item&sys\_id=5eff71761ba67154b065542d1e4bcb81&sysparm\_domain\_restore=false&sysparm\_stack=no |
+| **\*Enterprise Architecture** Use this form to initiate the triage process for a GenAI application | https://cbre.service-now.com/esc?id=sc\_cat\_item&table=sc\_cat\_item&sys\_id=aa13290b1bf758503d88caad1e4bcb54&searchTerm=%20Enterprise%20Architecture%20Service%20Request |
+| **\*ITSM** Use this form to request a privileged account for accessing cloud resources | https://cbre.service-now.com/esc?id=sc\_cat\_item&table=sc\_cat\_item&sys\_id=fff4e7963ce491803f4d47212e89e23d&searchTerm=it%20access%20request |
+Link: https://cbre-jira.atlassian.net/wiki/spaces/CLOUD/pages/39605931/Cloud+Platform+Request+Forms
+---
+","## **Email Services for Applications: SendGrid**
+
+**Overview:**
+Cloud Engineering offers **SendGrid as a Service** for sending emails from your application. This enterprise-grade email delivery service is hosted in CBRE's Azure 2.0 shared subscriptions.
+
+**Key Features:**
+* Enterprise-grade email delivery via `cbre.com`
+* SPF authentication
+* DKIM signing
+* DMARC validation
+
+**Availability:**
+* Supported across all cloud providers
+* Available in all CBRE-approved regions globally
+
+**How to Request:**
+If you need a SendGrid Sub User for your application, use the following ServiceNow form:
+* [SendGrid Sub User Request](https://cbre.service-now.com/esc?id=sc_cat_item&sys_id=dd27306a1b4296907e0b6287624bcb2d)
+
+**Additional Documentation:**
+* [Twilio SendGrid Enterprise Mail Confluence Page](https://cbre-jira.atlassian.net/wiki/spaces/CLOUD/pages/39584092/Twilio+SendGrid+Enterprise+Mail)
+
+**Architecture Details:**
+The service is configured in both production and non-production Azure environments, with robust email routing and authentication mechanisms.",11.308
+"I need access to this TFE project, can you have a look?","Please raise ServiceNow ticket to get new TFE project 
+https://cbre.service-now.com/esc?id=sc_cat_item&sys_id=9d51dc401bdd8ad044b664abbc4bcbbb","=== Confluence & SharePoint Results ===
+Content: # Overview Please read through the TFE Access and Security](https://cbre-jira.atlassian.net/wiki/display/CLOUD/TFE+Access+and+Security) and [TFE Project Planning pages completely before making a new request! # Request Details *
+Description: 
+Link: https://cbre-jira.atlassian.net/wiki/spaces/CLOUD/pages/39585503/Onboard+to+TFE
+---
+Content: # Overview This document will guide you to create a TFE Project in an automated approach. # ServiceNow Request Form 1. Access the snow form **TFE Project** to request for a new terraform project in TFE 2. Fill out the details in the form as below: a. Requested for b. TFE Project Name c. TFE Team Name (Team name should be your existing team where you want to create a project) TFE Project.png 3. Click on Order Now image-20240605-071215.png 4. Your snow form will be submitted for an approval to your manager (please take a note of your RITM submitted) 5. Once manager approves the request the respective pipeline will be triggered 6. Project will be created in TFE 7. RITM will be updated and closed. (check your email notifications for the RITM updates) # References If you spot any mistakes or discrepancies, please send us an email at DNT-CloudOperations@cbre.com
+Description: 
+Link: https://cbre-jira.atlassian.net/wiki/spaces/CLOUD/pages/183992360/TFE+Project
+---
+
+=== ServiceNow Reference Links ===
+Content: quality of the Cloud Assistant Bot, ensuring more accurate responses when processing SNOW form links
+
+| | |
+| - | - |
+| **Type** | **Form** *(link to description & use below)* |
+| AWS Account Request AWS Account Request form allows users to request new AWS accounts with required approvals. | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=e772a202dbd5505021d45fc4e29619e1 |
+| AWS Account Decommission Decommission existing AWS accounts C*urrently Only Non-prod, Dev and Sandbox supported* | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=9ce28d861b19de1458b54047b04bcb22 |
+| AWS Account Tags Update Update AWS Cloud Account Level Tags | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=c89fcc3f1b828654a3e4773bdc4bcb02 |
+| Request a new Azure Resource group Request a new Azure Resource Group (RG) | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=985693958714251053e174c6dabb35cd |
+| Cloud Assistance Azure & AWS Platform general support requests | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=9435de46db2a3704cdb9d2984b9619b2 |
+| Cloud Access Request This form is for requesting access to an existing AWS account or Azure Resource Group | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=f33b560adbea3704cdb9d2984b961987 |
+| Cloud Health read access form Request Read-only access to CloudHealth | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=a3d5e783db311c5009d03fd3e2961969 |
+| GCP Requests Currently there is no dedicated form to request a GCP Project, or report GCP issues, please raise a General IT Request | https://cbre.service-now.com/esc?id=sc\_cat\_item&table=sc\_cat\_item&sys\_id=a4d4eb563ce491803f4d47212e89e27a&searchTerm=General%20IT%20Request |
+| ECMP Tenancy Request from Request a new tenancy in Enterprise Container Management Platform (ECMP) | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=5a9e1f1a8723dd1053e174c6dabb352a |
+| ECMP Access Request Request access to ECMP | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=468fd76b87506d90dd59ba2e8bbb35d8 |
+| Modify ECMP Project Request an increase project quota in ECMP | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=f8cd43f01b39e950a14d844fdd4bcb50 |
+| ECMP Operations ECMP general support requests | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=d1229e96873af914cc57c88e8bbb35e9 |
+| New Terraform Enterprise Team Request a new TFE Team | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=2235c46e1b45069044b664abbc4bcb9e |
+| New Terraform Enterprise Project Request a new TFE Project | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=9d51dc401bdd8ad044b664abbc4bcbbb |
+| Terraform Enterprise Team Access Request access to an existing TFE Team | https://cbre.service-now.com/nav\_to.do?uri=%2Fcom.glideapp.servicecatalog\_cat\_item\_view.do%3Fv%3D1%26sysparm\_id%3D747ebbf21b6f825058b54047b04bcb8a%26sysparm\_link\_parent%3D5924d0c2dbf63b8ccdb9d2984b9619a2%26sysparm\_catalog%3De0d08b13c3330100c8b837659bba8fb4%26sysparm\_catalog\_view%3Dcatalog\_default%26sysparm\_view%3Dcatalog\_default |
+| BaaS Onboarding For initial onboarding requests to the BaaS platform | https://cbre.service-now.com/com.glideapp.servicecatalog\_cat\_item\_view.do?v=1&sysparm\_id=4fc54e1b874b96d880057666dabb357e |
+| BaaS Restoration Any restoration requests for the BaaS platform | https://cbre.service-now.com/com.glideapp.servicecatalog\_cat\_item\_view.do?v=1&sysparm\_id=4fc54e1b874b96d880057666dabb357e |
+| Sendgrid Sub User Request a Sub User on the CBE Sendgrid platform | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=dd27306a1b4296907e0b6287624bcb2d |
+| **\*General Identity Management Request** Use this form to register an application in Entra ID (Azure AD) for Single Sign-On (SSO) | https://cbre.service-now.com/esc?id=ep\_sc\_cat\_item&sys\_id=5eff71761ba67154b065542d1e4bcb81&sysparm\_domain\_restore=false&sysparm\_stack=no |
+| **\*Enterprise Architecture** Use this form to initiate the triage process for a GenAI application | https://cbre.service-now.com/esc?id=sc\_cat\_item&table=sc\_cat\_item&sys\_id=aa13290b1bf758503d88caad1e4bcb54&searchTerm=%20Enterprise%20Architecture%20Service%20Request |
+| **\*ITSM** Use this form to request a privileged account for accessing cloud resources | https://cbre.service-now.com/esc?id=sc\_cat\_item&table=sc\_cat\_item&sys\_id=fff4e7963ce491803f4d47212e89e23d&searchTerm=it%20access%20request |
+Link: https://cbre-jira.atlassian.net/wiki/spaces/CLOUD/pages/39605931/Cloud+Platform+Request+Forms
+---
+Content: ### **GCP Requests** Currently there is no dedicated form to request a GCP Project, or report GCP issues, please raise a General IT Request, with the following info: ### **Cloud Assistant Friendly Content** This content is intended to enhance the ingestion quality of the Cloud Assistant Bot, ensuring more accurate responses when processing SNOW form links
+Link: https://cbre-jira.atlassian.net/wiki/spaces/CLOUD/pages/39605931/Cloud+Platform+Request+Forms
+---
+","**How to Request a TFE Project**
+
+I've found two specific ServiceNow forms to help you with TFE project access:
+
+1. **New Terraform Enterprise Project Request**
+   - ServiceNow Link: [Request a New TFE Project](https://cbre.service-now.com/esc?id=sc_cat_item&sys_id=9d51dc401bdd8ad044b664abbc4bcbbb)
+
+2. **Terraform Enterprise Team Access Request**
+   - ServiceNow Link: [Request TFE Team Access](https://cbre.service-now.com/nav_to.do?uri=%2Fcom.glideapp.servicecatalog_cat_item_view.do%3Fv%3D1%26sysparm_id%3D747ebbf21b6f825058b54047b04bcb8a%26sysparm_link_parent%3D5924d0c2dbf63b8ccdb9d2984b9619a2%26sysparm_catalog%3De0d08b13c3330100c8b837659bba8fb4%26sysparm_catalog_view%3Dcatalog_default%26sysparm_view%3Dcatalog_default)
+
+**Additional Guidance from Confluence**:
+
+I also found some helpful documentation to guide you through the process:
+
+- **TFE Project Access Documentation**: [TFE Access and Security](https://cbre-jira.atlassian.net/wiki/display/CLOUD/TFE+Access+and+Security)
+- **TFE Project Onboarding**: [Onboard to TFE](https://cbre-jira.atlassian.net/wiki/spaces/CLOUD/pages/39585503/Onboard+to+TFE)
+
+**Request Process Steps**:
+1. Access the appropriate ServiceNow form
+2. Fill out the required details:
+   - Requested for
+   - TFE Project Name
+   - TFE Team Name
+3. Submit the request
+4. Wait for manager approval
+5. Once approved, the project will be created in TFE
+
+**Need Help?**
+If you encounter any issues, contact: `DNT-CloudOperations@cbre.com`",9.301
+What are the supported AWS services?,"EC2, SQL Server (IaaS), RDS, EFS/FSX ,  S3 ","=== Confluence & SharePoint Results ===
+Content: ## Azure
+| **Service** | **Backup Type** |
+| - | - |
+| Azure VM | VM Snapshots Disc Snapshots File Restore Application Consistent Crash Consistent |
+| Azure SQL | PITR Long retention Backup |
+| Azure SQL Managed Instance | PITR Long retention Backup |
+| SQL Server (IaaS) | PITR Long retention Backup |
+| Azure Files | Snapshot Backup |
+| Azure PostgreSQL (Will be available by end of 2024) | |
+| Azure Blob | |
+| Cosmos DB (Roadmap) | |
+| Azure MySQL (Roadmap) | |
+## **AWS**
+| **Service** | **Backup Type** | |
+| - | - | |
+| EC2 | VM Snapshots Disc Snapshots File Restore Application Consistent Crash Consistent | |
+| SQL Server (IaaS) | PITR Long retention Backup | |
+| RDS | PITR Long retention Backup | |
+| EFS/FSX | Snapshot Backup | |
+| S3 | Snapshot Backup | |
+| DynamoDB (Roadmap) | | |
+
+Description: 
+Link: https://cbre.sharepoint.com/sites/intra-TS-BaaS/SitePages/sc_supported_services.aspx
+---
+Content: # Overview
+This page covers the reference architecture for CBRE approved cloud provider platforms. These patterns should be followed to ensure best availability for modules and support.
+# Azure
+| | | | | | | |
+| - | - | - | - | - | - | - |
+| **Category** | **Application type** | **Azure key resources** | **Azure Storage / DB** | **Key Mgmt** | **Monitoring** | **Repo link** |
+| **WebApps** | WebApp - with Application Gateway | ASP, App Gateway, WebApp - Linux/Windows | Storage Account + SQL / MY SQL / PostGres / Cosmos | Key Vault | Azure AppInsight, Azure Monitor | |
+| WebApp - without Application Gateway | ASP, WebApp - Linux/Windows | Storage Account + SQL / MY SQL / PostGres / Cosmos | Key Vault | Azure AppInsight, Azure Monitor | |
+| WebApp - Internal Facing | Virtual Machines + Load Balancer | Storage Account + MS SQL on Virtual Machine | Key Vault | Azure AppInsight, Azure Monitor | |
+| WebApp - External Facing | ASP, App Gateway / Traffic Manager/Load balancer, WebApp - Linux/Windows | Storage Account + SQL / MY SQL / PostGres / Cosmos | Key Vault | Azure AppInsight, Azure Monitor | |
+| WebApp - Performance Optimized | ASP, App Gateway, WebApp - Linux/Windows | Storage Account + Redis Cache | Key Vault | Azure AppInsight, Azure Monitor | |
+| WebApp - High Availability | ASP, App Gateway, WebApp - Linux/Windows CDN + Front Door | Storage Account + Redis Cache | Key Vault | Azure AppInsight, Azure Monitor | |
+| **Microservices** | API - Simple | Azure Functions + API Management | Storage Account + SQL / MY SQL / PostGres / Cosmos | Key Vault | Azure AppInsight, Azure Monitor | |
+| API | Azure App Services + API Management | Storage Account + SQL / MY SQL / PostGres / Cosmos | Key Vault | Azure AppInsight, Azure Monitor | |
+| **Async App behavior** | Event driven | Azure Functions + Event Hub + Event Grid | Storage Account + SQL / MY SQL / PostGres / Cosmos | Key Vault | Azure AppInsight, Azure Monitor | |
+| Message | Azure Functions + Service Bus + Event Grid | Storage Account + SQL / MY SQL / PostGres / Cosmos | Key Vault | Azure AppInsight, Azure Monitor | |
+| **Data Engineering** | Data Ingestion | AzCopy - CLI tool | Storage Account / Azure Data Lake | Key Vault | Azure AppInsight, Azure Monitor | |
+| Data Ingestion | Azure DataFactory + Azure functions | Storage Account / Azure Data Lake | Key Vault | Azure AppInsight, Azure Monitor | |
+| Data Ingestion | Azure Databricks | Storage Account / Azure Data Lake / Databricks Delta Lake | Key Vault | Azure AppInsight, Azure Monitor | |
+| **Data Analytics** | Medallia Architecture | Azure DataBricks + Azure DataFactory + Power BI + Azure Purview - Less priority (only 1 resource found) | Storage Account / Azure Data Lake / Databricks Delta Lake | Key Vault | Azure AppInsight, Azure Monitor | |
+| OLAP | Azure Synapse Analytics + Azure DataFactory + Power BI | Storage Account / Azure Data Lake | Key Vault | Azure AppInsight, Azure Monitor | |
+| Real - time Analytics | Azure Synapse Analytics + Azure Databricks / Functions + Power BI + Event Hub + Stream Analytics | Azure Storage | Key Vault | Azure AppInsight, Azure Monitor | |
+| Log processing | Azure Log Analytics + Azure Sentinel + Azure Databricks / Functions + Power BI + Event Hub + Stream Analytics | Azure Storage | Key Vault | Azure AppInsight, Azure Monitor | |
+| IoT Data Streaming | Azure Synapse Analytics + Azure Databricks / Functions + Power BI + Stream Analytics + IoT Hub | Azure Storage | Key Vault | Azure AppInsight, Azure Monitor | |
+| **AI** | AI services | AI Foundary / Azure Open AI Studio | Azure Storage | Key Vault | Azure AppInsight, Azure Monitor | |
+| **General** | Notifications - Realtime | Notification hubs + Azure functions / Azure Kubernetes / Azure Spring Cloud - not sure the use case is applicable or not (ECMP platform) | Azure Storage | Key Vault | Azure AppInsight, Azure Monitor | |
+| Long Running Process | Azure Batch Services | Azure Storage | Key Vault | Azure AppInsight, Azure Monitor | |
+# AWS
+| | | | | | | |
+| - | - | - | - | - | - | - |
+| **Category** | **Application Type** | **AWS Key Resources** | **AWS storage / DB** | **Key Mgmt** | **Monitoring** | **Repo Link** |
+| **Web Portal** | Internal Facing | EC2 + ALB or NLB | EBS / S3 + RDS (SQL Server on EC2 or RDS) | KMS | CloudWatch, X-Ray | |
+| External Facing | ALB, Route 53, EC2 | S3 + RDS / DynamoDB / DocumentDB | KMS | CloudWatch, X-Ray | |
+| Static Site Hosting | S3 + CloudFront+Route53 | S3 | KMS | CloudWatch | |
+| Containerized Full-Stack App | ECS Fargate + ALB + RDS | S3 + RDS / DynamoDB | KMS | CloudWatch, X-Ray | |
+| **Microservices** | API | Lambda + API Gateway (Rest API) | S3 + RDS / DynamoDB / DocumentDB | KMS | CloudWatch, X-Ray | |
+| API -HTTP API/Websocket API | Lambda + API Gateway (http\_api, websocket\_api) | S3 + RDS / DynamoDB / DocumentDB | KMS | CloudWatch, X-Ray | |
+| API - HTTP API with CF | Lambda + API Gateway (http\_api) + waf + cloudfront | S3 + RDS / DynamoDB / DocumentDB | KMS | CloudWatch, X-Ray | |
+| Event Sourcing with CQRS | Lambda + EventBridge + DynamoDB + SQS | S3 + DynamoDB | KMS | CloudWatch, X-Ray | |
+| Lightweight API | ECS Fargate + API Gateway | S3 + RDS / DynamoDB / DocumentDB | KMS | CloudWatch, X-Ray | |
+| **Async App** | Event Driven | Lambda + EventBridge + SNS | S3 + RDS / DynamoDB / DocumentDB | KMS | CloudWatch, X-Ray | |
+| Message | Lambda + SQS + EventBridge | S3 + RDS / DynamoDB / DocumentDB | KMS | CloudWatch, X-Ray | |
+| **Data Engineering** | Modern Data Lake | Lake Formation + Glue + Athena + S3 | S3 | KMS | CloudWatch | |
+| ETL-as-a-Service | Step Functions + Glue + Lambda | S3 / Lake Formation | KMS | CloudWatch | |
+| Data Ingestion - Pipeline | AWS Glue + Lambda | S3 / Lake Formation | KMS | CloudWatch | |
+| Data Ingestion - Large Scale | Airflow / Glue | S3 | KMS | CloudWatch | |
+| **Data Analytics** | Medallia Architecture | EMR + Glue + QuickSight + Data Catalog | S3 / Lake Formation | KMS | CloudWatch | |
+| OLAP | Redshift + Glue + QuickSight | S3 / Redshift | KMS | CloudWatch | |
+| Real-Time Analytics | Kinesis Data Analytics + Lambda + QuickSight | S3 | KMS | CloudWatch | |
+| Serverless BI | Athena + QuickSight | S3 | KMS | CloudWatch | |
+| Log Processing | CloudWatch Logs + OpenSearch + Lambda | S3 | KMS | CloudWatch | |
+| **General** | Notifications - Realtime | SNS + Lambda / ECS / EKS | S3 | KMS | CloudWatch | |
+--------------------
+| | | | |
+| - | - | - | - |
+| **Owner** | **Reviewed by** | **Last review date** | **Next review date** |
+| David Thomas](https://cbre-jira.atlassian.net/wiki/people/712020:3e29021d-93c6-42d3-b214-5b3bee79c3dc?ref=confluence) | [Mike Suter | 04/21/2025 | 06/21/2025 |
+
+Description: 
+Link: https://cbre-jira.atlassian.net/wiki/spaces/CLOUD/pages/371559133/Reference+Architectures
+---
+
+=== ServiceNow Reference Links ===
+Content: quality of the Cloud Assistant Bot, ensuring more accurate responses when processing SNOW form links
+
+| | |
+| - | - |
+| **Type** | **Form** *(link to description & use below)* |
+| AWS Account Request AWS Account Request form allows users to request new AWS accounts with required approvals. | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=e772a202dbd5505021d45fc4e29619e1 |
+| AWS Account Decommission Decommission existing AWS accounts C*urrently Only Non-prod, Dev and Sandbox supported* | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=9ce28d861b19de1458b54047b04bcb22 |
+| AWS Account Tags Update Update AWS Cloud Account Level Tags | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=c89fcc3f1b828654a3e4773bdc4bcb02 |
+| Request a new Azure Resource group Request a new Azure Resource Group (RG) | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=985693958714251053e174c6dabb35cd |
+| Cloud Assistance Azure & AWS Platform general support requests | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=9435de46db2a3704cdb9d2984b9619b2 |
+| Cloud Access Request This form is for requesting access to an existing AWS account or Azure Resource Group | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=f33b560adbea3704cdb9d2984b961987 |
+| Cloud Health read access form Request Read-only access to CloudHealth | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=a3d5e783db311c5009d03fd3e2961969 |
+| GCP Requests Currently there is no dedicated form to request a GCP Project, or report GCP issues, please raise a General IT Request | https://cbre.service-now.com/esc?id=sc\_cat\_item&table=sc\_cat\_item&sys\_id=a4d4eb563ce491803f4d47212e89e27a&searchTerm=General%20IT%20Request |
+| ECMP Tenancy Request from Request a new tenancy in Enterprise Container Management Platform (ECMP) | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=5a9e1f1a8723dd1053e174c6dabb352a |
+| ECMP Access Request Request access to ECMP | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=468fd76b87506d90dd59ba2e8bbb35d8 |
+| Modify ECMP Project Request an increase project quota in ECMP | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=f8cd43f01b39e950a14d844fdd4bcb50 |
+| ECMP Operations ECMP general support requests | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=d1229e96873af914cc57c88e8bbb35e9 |
+| New Terraform Enterprise Team Request a new TFE Team | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=2235c46e1b45069044b664abbc4bcb9e |
+| New Terraform Enterprise Project Request a new TFE Project | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=9d51dc401bdd8ad044b664abbc4bcbbb |
+| Terraform Enterprise Team Access Request access to an existing TFE Team | https://cbre.service-now.com/nav\_to.do?uri=%2Fcom.glideapp.servicecatalog\_cat\_item\_view.do%3Fv%3D1%26sysparm\_id%3D747ebbf21b6f825058b54047b04bcb8a%26sysparm\_link\_parent%3D5924d0c2dbf63b8ccdb9d2984b9619a2%26sysparm\_catalog%3De0d08b13c3330100c8b837659bba8fb4%26sysparm\_catalog\_view%3Dcatalog\_default%26sysparm\_view%3Dcatalog\_default |
+| BaaS Onboarding For initial onboarding requests to the BaaS platform | https://cbre.service-now.com/com.glideapp.servicecatalog\_cat\_item\_view.do?v=1&sysparm\_id=4fc54e1b874b96d880057666dabb357e |
+| BaaS Restoration Any restoration requests for the BaaS platform | https://cbre.service-now.com/com.glideapp.servicecatalog\_cat\_item\_view.do?v=1&sysparm\_id=4fc54e1b874b96d880057666dabb357e |
+| Sendgrid Sub User Request a Sub User on the CBE Sendgrid platform | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=dd27306a1b4296907e0b6287624bcb2d |
+| **\*General Identity Management Request** Use this form to register an application in Entra ID (Azure AD) for Single Sign-On (SSO) | https://cbre.service-now.com/esc?id=ep\_sc\_cat\_item&sys\_id=5eff71761ba67154b065542d1e4bcb81&sysparm\_domain\_restore=false&sysparm\_stack=no |
+| **\*Enterprise Architecture** Use this form to initiate the triage process for a GenAI application | https://cbre.service-now.com/esc?id=sc\_cat\_item&table=sc\_cat\_item&sys\_id=aa13290b1bf758503d88caad1e4bcb54&searchTerm=%20Enterprise%20Architecture%20Service%20Request |
+| **\*ITSM** Use this form to request a privileged account for accessing cloud resources | https://cbre.service-now.com/esc?id=sc\_cat\_item&table=sc\_cat\_item&sys\_id=fff4e7963ce491803f4d47212e89e23d&searchTerm=it%20access%20request |
+Link: https://cbre-jira.atlassian.net/wiki/spaces/CLOUD/pages/39605931/Cloud+Platform+Request+Forms
+---
+","**Supported AWS Services at CBRE**
+
+Based on internal documentation, CBRE has approved Amazon Web Services (AWS) as one of its official cloud service providers. Here are the key details:
+
+**Official Cloud Service Provider Status**
+- AWS is listed as an approved cloud service provider alongside Microsoft Azure, Google GCP, and Alibaba Ali Cloud
+- Documented in the **APPROVED CLOUD SERVICE PROVIDERS** policy (Last Updated: 03/29/2021)
+
+**AWS-Related ServiceNow Request Forms**
+1. **AWS Account Management**
+   - `AWS Account Request`: [Request New AWS Account](https://cbre.service-now.com/esc?id=sc_cat_item&sys_id=e772a202dbd5505021d45fc4e29619e1)
+   - `AWS Account Decommission`: [Decommission AWS Accounts](https://cbre.service-now.com/esc?id=sc_cat_item&sys_id=9ce28d861b19de1458b54047b04bcb22) *(Currently supports Non-prod, Dev, and Sandbox)*
+   - `AWS Account Tags Update`: [Update Cloud Account Tags](https://cbre.service-now.com/esc?id=sc_cat_item&sys_id=c89fcc3f1b828654a3e4773bdc4bcb02)
+
+2. **Cloud Access and Support**
+   - `Cloud Access Request`: [Request Access to AWS Account](https://cbre.service-now.com/esc?id=sc_cat_item&sys_id=f33b560adbea3704cdb9d2984b961987)
+   - `Cloud Assistance`: [AWS Platform Support](https://cbre.service-now.com/esc?id=sc_cat_item&sys_id=9435de46db2a3704cdb9d2984b9619b2)
+   - `Cloud Health Read Access`: [CloudHealth Access](https://cbre.service-now.com/esc?id=sc_cat_item&sys_id=a3d5e783db311c5009d03fd3e2961969)
+
+**Important Notes**
+- Cloud resources are subject to CBRE's Cloud Governance Standards
+- All cloud resources must be used for business purposes
+- Security and compliance are critical when using cloud services
+
+**Source Documents**
+- [Approved Cloud Service Providers](https://cbre.sharepoint.com/sites/intra-TS-CloudPlatformEngineering/Shared%20Documents/Shared%20Documents/Approved%20Cloud%20Service%20Providers.pdf)
+- [CBRE Cloud Cost Standard](https://cbre.sharepoint.com/sites/intra-TS-CloudPlatformEngineering/Shared%20Documents/Shared%20Documents/CBRE%20Cloud%20Cost%20Standard.pdf)",13.35
+Are there any Azure services that will be supported at a later point?,"Azure PostgreSQL (Will be available by end of 2024),  Cosmos DB (Roadmap), Azure MySQL (Roadmap)","=== Confluence & SharePoint Results ===
+Content: ## 
+| Features | Target GA date (CY) |
+| - | - |
+| Support for AzureDB PostgreSQL Flexible Server (These backups should be immutable like Azure SQL) | January 2025 |
+| Immutable backup for Azure SQL DB without CDC | July 2024 |
+| Immutable backup for Azure SQL MI without CDC | September 2024 |
+| Immutable RDS backup | January 2025 |
+| Granular RBAC for self-service restoration down to the individual workload level by development teams in both Azure and AWS. | July 2024 |
+| Support for Azure Blob(Immutable Backups) | July 2024 |
+| Support for Azure MySQL Flexible (Immutable Backups) | July 2025 |
+| Support for DynamoDB (Immutable Backups) | Dec 2025 |
+| Support for CosmosDB (Immutable Backups) | Dec 2025 |
+| Chargeback model enhancements | |
+
+Description: 
+Link: https://cbre.sharepoint.com/sites/intra-TS-BaaS/SitePages/sc_roadmap.aspx
+---
+Content: ## Azure
+| **Service** | **Backup Type** |
+| - | - |
+| Azure VM | VM Snapshots Disc Snapshots File Restore Application Consistent Crash Consistent |
+| Azure SQL | PITR Long retention Backup |
+| Azure SQL Managed Instance | PITR Long retention Backup |
+| SQL Server (IaaS) | PITR Long retention Backup |
+| Azure Files | Snapshot Backup |
+| Azure PostgreSQL (Will be available by end of 2024) | |
+| Azure Blob | |
+| Cosmos DB (Roadmap) | |
+| Azure MySQL (Roadmap) | |
+## **AWS**
+| **Service** | **Backup Type** | |
+| - | - | |
+| EC2 | VM Snapshots Disc Snapshots File Restore Application Consistent Crash Consistent | |
+| SQL Server (IaaS) | PITR Long retention Backup | |
+| RDS | PITR Long retention Backup | |
+| EFS/FSX | Snapshot Backup | |
+| S3 | Snapshot Backup | |
+| DynamoDB (Roadmap) | | |
+
+Description: 
+Link: https://cbre.sharepoint.com/sites/intra-TS-BaaS/SitePages/sc_supported_services.aspx
+---
+
+=== ServiceNow Reference Links ===
+Content: quality of the Cloud Assistant Bot, ensuring more accurate responses when processing SNOW form links
+
+| | |
+| - | - |
+| **Type** | **Form** *(link to description & use below)* |
+| AWS Account Request AWS Account Request form allows users to request new AWS accounts with required approvals. | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=e772a202dbd5505021d45fc4e29619e1 |
+| AWS Account Decommission Decommission existing AWS accounts C*urrently Only Non-prod, Dev and Sandbox supported* | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=9ce28d861b19de1458b54047b04bcb22 |
+| AWS Account Tags Update Update AWS Cloud Account Level Tags | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=c89fcc3f1b828654a3e4773bdc4bcb02 |
+| Request a new Azure Resource group Request a new Azure Resource Group (RG) | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=985693958714251053e174c6dabb35cd |
+| Cloud Assistance Azure & AWS Platform general support requests | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=9435de46db2a3704cdb9d2984b9619b2 |
+| Cloud Access Request This form is for requesting access to an existing AWS account or Azure Resource Group | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=f33b560adbea3704cdb9d2984b961987 |
+| Cloud Health read access form Request Read-only access to CloudHealth | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=a3d5e783db311c5009d03fd3e2961969 |
+| GCP Requests Currently there is no dedicated form to request a GCP Project, or report GCP issues, please raise a General IT Request | https://cbre.service-now.com/esc?id=sc\_cat\_item&table=sc\_cat\_item&sys\_id=a4d4eb563ce491803f4d47212e89e27a&searchTerm=General%20IT%20Request |
+| ECMP Tenancy Request from Request a new tenancy in Enterprise Container Management Platform (ECMP) | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=5a9e1f1a8723dd1053e174c6dabb352a |
+| ECMP Access Request Request access to ECMP | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=468fd76b87506d90dd59ba2e8bbb35d8 |
+| Modify ECMP Project Request an increase project quota in ECMP | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=f8cd43f01b39e950a14d844fdd4bcb50 |
+| ECMP Operations ECMP general support requests | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=d1229e96873af914cc57c88e8bbb35e9 |
+| New Terraform Enterprise Team Request a new TFE Team | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=2235c46e1b45069044b664abbc4bcb9e |
+| New Terraform Enterprise Project Request a new TFE Project | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=9d51dc401bdd8ad044b664abbc4bcbbb |
+| Terraform Enterprise Team Access Request access to an existing TFE Team | https://cbre.service-now.com/nav\_to.do?uri=%2Fcom.glideapp.servicecatalog\_cat\_item\_view.do%3Fv%3D1%26sysparm\_id%3D747ebbf21b6f825058b54047b04bcb8a%26sysparm\_link\_parent%3D5924d0c2dbf63b8ccdb9d2984b9619a2%26sysparm\_catalog%3De0d08b13c3330100c8b837659bba8fb4%26sysparm\_catalog\_view%3Dcatalog\_default%26sysparm\_view%3Dcatalog\_default |
+| BaaS Onboarding For initial onboarding requests to the BaaS platform | https://cbre.service-now.com/com.glideapp.servicecatalog\_cat\_item\_view.do?v=1&sysparm\_id=4fc54e1b874b96d880057666dabb357e |
+| BaaS Restoration Any restoration requests for the BaaS platform | https://cbre.service-now.com/com.glideapp.servicecatalog\_cat\_item\_view.do?v=1&sysparm\_id=4fc54e1b874b96d880057666dabb357e |
+| Sendgrid Sub User Request a Sub User on the CBE Sendgrid platform | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=dd27306a1b4296907e0b6287624bcb2d |
+| **\*General Identity Management Request** Use this form to register an application in Entra ID (Azure AD) for Single Sign-On (SSO) | https://cbre.service-now.com/esc?id=ep\_sc\_cat\_item&sys\_id=5eff71761ba67154b065542d1e4bcb81&sysparm\_domain\_restore=false&sysparm\_stack=no |
+| **\*Enterprise Architecture** Use this form to initiate the triage process for a GenAI application | https://cbre.service-now.com/esc?id=sc\_cat\_item&table=sc\_cat\_item&sys\_id=aa13290b1bf758503d88caad1e4bcb54&searchTerm=%20Enterprise%20Architecture%20Service%20Request |
+| **\*ITSM** Use this form to request a privileged account for accessing cloud resources | https://cbre.service-now.com/esc?id=sc\_cat\_item&table=sc\_cat\_item&sys\_id=fff4e7963ce491803f4d47212e89e23d&searchTerm=it%20access%20request |
+Link: https://cbre-jira.atlassian.net/wiki/spaces/CLOUD/pages/39605931/Cloud+Platform+Request+Forms
+---
+Content: ### **GCP Requests** Currently there is no dedicated form to request a GCP Project, or report GCP issues, please raise a General IT Request, with the following info: ### **Cloud Assistant Friendly Content** This content is intended to enhance the ingestion quality of the Cloud Assistant Bot, ensuring more accurate responses when processing SNOW form links
+Link: https://cbre-jira.atlassian.net/wiki/spaces/CLOUD/pages/39605931/Cloud+Platform+Request+Forms
+---
+","**Upcoming Azure Services Support Roadmap**
+
+Based on the internal CBRE roadmap, here are the Azure services planned for future support:
+
+**Immutable Backup Services**:
+1. Azure SQL DB without CDC: July 2024
+2. Azure SQL Managed Instance without CDC: September 2024
+3. Azure Blob (Immutable Backups): July 2024
+4. AzureDB PostgreSQL Flexible Server: January 2025
+5. Azure MySQL Flexible (Immutable Backups): July 2025
+6. CosmosDB (Immutable Backups): December 2025
+
+**Additional Planned Capabilities**:
+- Granular RBAC for self-service restoration down to the individual workload level in Azure: July 2024
+
+**Source**: 
+- [CBRE SharePoint Roadmap](https://cbre.sharepoint.com/sites/intra-TS-BaaS/SitePages/sc_roadmap.aspx)
+- [CBRE Cloud Reference Architectures](https://cbre-jira.atlassian.net/wiki/spaces/CLOUD/pages/371559133/Reference+Architectures)
+
+**Relevant ServiceNow Links**:
+- [Azure Resource Group Request](https://cbre.service-now.com/esc?id=sc_cat_item&sys_id=985693958714251053e174c6dabb35cd)
+- [Cloud Assistance for Azure](https://cbre.service-now.com/esc?id=sc_cat_item&sys_id=9435de46db2a3704cdb9d2984b9619b2)",8.736
+What is the BaaS architecture for a Dedicated subscription?,"Transaction log backups run every 15 minutes for Tier 1 and every 30 minutes for Tiers 2-4, all with 7-day retention.
+
+Regular backups occur every 12 hours for Tiers 1-2 with 7-day retention, while Tiers 3-4 get daily backups with the same retention period.
+
+All tiers receive weekly backups with extended 9-week retention for longer historical recovery options.
+","=== Confluence & SharePoint Results ===
+Content: **Shared Subscriptions**
+| S.No | | Dedicated to a Specific team or Shared | Subscription |
+| - | - | - | - |
+| 1 | These are regular RGs that are given to our product teams (no change) | Dedicated | Shared\_prod |
+| 2 | This shared RG will have snapshots of all the regions' applications in the subscription. | Shared | Shared\_prod |
+| 3 | This RG will be in a dedicated subscription for BaaS, hosting all the shared components for all regions. | Shared | BaaS Shared Prod Subscription |
+| 4 | Azure creates This RG on the fly whenever a new Exocompute is provisioned (3). The Exocompute is ephemeral, so it gets deleted automatically if it remains in an ideal state for 10 minutes so the RG is also where it was provisioned | Shared | BaaS Shared Prod Subscription |
+| 5 | These are 4 storage accounts for each product to keep different backups for specific products. All these will remain in shared RG. Rubrik creates some of these storage accounts on the fly, but we need to create some as prerequisites and configure them in Rubrik. We can tag these storage accounts in both cases so these can be easily identified products to which these belong. | Storage accounts are dedicated, but RG is shared. | BaaS Shared Prod Subscription |
+Rubrik Subscription and Resource Group Layout for Shared Production Subscription
+* All Rubrik Security Cloud-controlled shared compute and storage resources will be aligned to a single Subscription for the Shared Prod Subscription. The following RG's will be deployed to contain these resources in this Rubrik Shared Prod Subscription:
+* One Rubrik RG for containing Azure VM Snapshots from all regions
+* One BaaS Platform Support RG to contain the following Rubrik Infrastructure Services per region:
+Rubrik Cloud Cluster Elastic Storage (CCES) - for protecting SQL Servers on Azure VM
+NAS Cloud Direct (NCD) VM's - for protecting File workloads such as Azure Files over SMB & NFS
+Exocompute (AKS) - for providing auxillary services such as snapshot indexing and archiving as well as Azure Blob Protection data mover services.
+* One BaaS Storage RG to contain the Storage Accounts and their Blob Containers used as one of the following types of Archive Locations:
+Cloud Native Protection (CNP) Archive Locations - contains compressed and immutable, Azure VM Snapshots and Azure Blob backups
+Azure SQL Immutable Backups (SQL) - contains immutable BACPAC copies of SQL DB/MI instances
+NAS Cloud Direct Archive Locations (NCD) - contains immutable and compressed Azure Files backups
+Data Center Archive Locations (DC) - used by Cloud Cluster ES for long-term archives of SQL Servers on Azure VM's and other data center workloads deployed on Azure VM's.
+* Rubrik-Infra-\* RG's created for each instance of Exocompute:
+These are created and destroyed along with each AKS instance for Rubrik Exocompute as part of Azure's process for AKS deployment
+**Dedicated Subscription**
+| | | Dedicated to a Specific team or Shared | Subscription |
+| - | - | - | - |
+| 1 | These are regular RGs that are given to our product teams (no change) | Dedicated | SIJARVIS |
+| 2 | This shared RG will have snapshots of all the regions' applications in the subscription. | Dedicated | SIJARVIS |
+| 3 | This RG will be in a dedicated subscription for BaaS, hosting all the shared components for all regions. | Dedicated | SIJARVIS |
+| 4 | Azure creates This RG on the fly whenever a new Exocompute is provisioned (3). The Exocompute is ephemeral, so it gets deleted automatically if it remains in an ideal state for 10 minutes so the RG is also where it was provisioned | Dedicated | SIJARVIS |
+| 5 | These are 4 storage accounts for each product to keep different types of backups for specific product. All these will remain in shared RG. Rubrik creates some of these storage accounts on the fly, but we need to create some as prerequisites and configure them in Rubrik. | Dedicated | SIJARVIS |
+Rubrik Resource Group Layout for Dedicated Production Subscriptions
+* One Rubrik RG for containing Azure VM Snapshots and Storage Accounts and their Blob Containers used as one of the following types of Archive Locations:
+Cloud Native Protection (CNP) Archive Locations - contains compressed and immutable, Azure VM Snapshots and Azure Blob backups
+Azure SQL Immutable Backups (SQL) - contains immutable BACPAC copies of SQL DB/MI instances
+NAS Cloud Direct Archive Locations (NCD) - contains immutable and compressed Azure Files backups
+Data Center Archive Locations (DC) - used by Cloud Cluster ES for long-term archives of SQL Servers on Azure VM's and other data center workloads deployed on Azure VM's.
+* One BaaS Platform Support RG to contain the following Rubrik Infrastructure Services per region:
+Rubrik Cloud Cluster Elastic Storage (CCES) - for protecting SQL Servers on Azure VM
+NAS Cloud Direct (NCD) VM's - for protecting File workloads such as Azure Files over SMB & NFS
+Exocompute (AKS) - for providing auxillary services such as snapshot indexing and archiving as well as Azure Blob Protection data mover services
+* Rubrik-Infra-\* RG's created for each instance of Exocompute:
+These are created and destroyed along with each AKS instance for Rubrik Exocompute as part of Azure's process for AKS deployment
+
+Description: 
+Link: https://cbre.sharepoint.com/sites/intra-TS-BaaS/SitePages/Architecture_Azure.aspx
+---
+Content: | | | Dedicated to a Specific team or Shared |
+| - | - | - |
+| 1 | These are dedicated AWS accounts for our product teams (no change). BaaS will create some snapshots to take backups in these accounts but all will be related to same AWS accounts | Dedicated |
+| 2 | These are Shared components and will be used by all other AWS accounts. These shared components will be deployed to shared accounts (BaaS Platform accounts) | Shared AWS accounts |
+| 3 | These are 3 S3 buckets for each product to keep different types of backups for specific product. All these will remain in a shared AWS account. Rubrik creates some of these s3 buckets on the fly, but we need to create some as prerequisites and configure them in Rubrik. We can tag these buckets in both cases so these can be easily identified products to which these belong. | Shared AWS accounts |
+
+Description: 
+Link: https://cbre.sharepoint.com/sites/intra-TS-BaaS/SitePages/Architecture_AWS.aspx
+---
+
+=== ServiceNow Reference Links ===
+Content: ### **GCP Requests** Currently there is no dedicated form to request a GCP Project, or report GCP issues, please raise a General IT Request, with the following info: ### **Cloud Assistant Friendly Content** This content is intended to enhance the ingestion quality of the Cloud Assistant Bot, ensuring more accurate responses when processing SNOW form links
+Link: https://cbre-jira.atlassian.net/wiki/spaces/CLOUD/pages/39605931/Cloud+Platform+Request+Forms
+---
+Content: quality of the Cloud Assistant Bot, ensuring more accurate responses when processing SNOW form links
+
+| | |
+| - | - |
+| **Type** | **Form** *(link to description & use below)* |
+| AWS Account Request AWS Account Request form allows users to request new AWS accounts with required approvals. | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=e772a202dbd5505021d45fc4e29619e1 |
+| AWS Account Decommission Decommission existing AWS accounts C*urrently Only Non-prod, Dev and Sandbox supported* | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=9ce28d861b19de1458b54047b04bcb22 |
+| AWS Account Tags Update Update AWS Cloud Account Level Tags | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=c89fcc3f1b828654a3e4773bdc4bcb02 |
+| Request a new Azure Resource group Request a new Azure Resource Group (RG) | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=985693958714251053e174c6dabb35cd |
+| Cloud Assistance Azure & AWS Platform general support requests | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=9435de46db2a3704cdb9d2984b9619b2 |
+| Cloud Access Request This form is for requesting access to an existing AWS account or Azure Resource Group | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=f33b560adbea3704cdb9d2984b961987 |
+| Cloud Health read access form Request Read-only access to CloudHealth | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=a3d5e783db311c5009d03fd3e2961969 |
+| GCP Requests Currently there is no dedicated form to request a GCP Project, or report GCP issues, please raise a General IT Request | https://cbre.service-now.com/esc?id=sc\_cat\_item&table=sc\_cat\_item&sys\_id=a4d4eb563ce491803f4d47212e89e27a&searchTerm=General%20IT%20Request |
+| ECMP Tenancy Request from Request a new tenancy in Enterprise Container Management Platform (ECMP) | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=5a9e1f1a8723dd1053e174c6dabb352a |
+| ECMP Access Request Request access to ECMP | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=468fd76b87506d90dd59ba2e8bbb35d8 |
+| Modify ECMP Project Request an increase project quota in ECMP | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=f8cd43f01b39e950a14d844fdd4bcb50 |
+| ECMP Operations ECMP general support requests | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=d1229e96873af914cc57c88e8bbb35e9 |
+| New Terraform Enterprise Team Request a new TFE Team | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=2235c46e1b45069044b664abbc4bcb9e |
+| New Terraform Enterprise Project Request a new TFE Project | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=9d51dc401bdd8ad044b664abbc4bcbbb |
+| Terraform Enterprise Team Access Request access to an existing TFE Team | https://cbre.service-now.com/nav\_to.do?uri=%2Fcom.glideapp.servicecatalog\_cat\_item\_view.do%3Fv%3D1%26sysparm\_id%3D747ebbf21b6f825058b54047b04bcb8a%26sysparm\_link\_parent%3D5924d0c2dbf63b8ccdb9d2984b9619a2%26sysparm\_catalog%3De0d08b13c3330100c8b837659bba8fb4%26sysparm\_catalog\_view%3Dcatalog\_default%26sysparm\_view%3Dcatalog\_default |
+| BaaS Onboarding For initial onboarding requests to the BaaS platform | https://cbre.service-now.com/com.glideapp.servicecatalog\_cat\_item\_view.do?v=1&sysparm\_id=4fc54e1b874b96d880057666dabb357e |
+| BaaS Restoration Any restoration requests for the BaaS platform | https://cbre.service-now.com/com.glideapp.servicecatalog\_cat\_item\_view.do?v=1&sysparm\_id=4fc54e1b874b96d880057666dabb357e |
+| Sendgrid Sub User Request a Sub User on the CBE Sendgrid platform | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=dd27306a1b4296907e0b6287624bcb2d |
+| **\*General Identity Management Request** Use this form to register an application in Entra ID (Azure AD) for Single Sign-On (SSO) | https://cbre.service-now.com/esc?id=ep\_sc\_cat\_item&sys\_id=5eff71761ba67154b065542d1e4bcb81&sysparm\_domain\_restore=false&sysparm\_stack=no |
+| **\*Enterprise Architecture** Use this form to initiate the triage process for a GenAI application | https://cbre.service-now.com/esc?id=sc\_cat\_item&table=sc\_cat\_item&sys\_id=aa13290b1bf758503d88caad1e4bcb54&searchTerm=%20Enterprise%20Architecture%20Service%20Request |
+| **\*ITSM** Use this form to request a privileged account for accessing cloud resources | https://cbre.service-now.com/esc?id=sc\_cat\_item&table=sc\_cat\_item&sys\_id=fff4e7963ce491803f4d47212e89e23d&searchTerm=it%20access%20request |
+Link: https://cbre-jira.atlassian.net/wiki/spaces/CLOUD/pages/39605931/Cloud+Platform+Request+Forms
+---
+","**Backup as a Service (BaaS) Architecture for Dedicated Subscription**
+
+**Key Architecture Components:**
+* **Regions:** Typically spans two regions (e.g., East US 2 as Primary, Central US as Secondary)
+* **Resource Groups:**
+  - Backup Resource Group (RG)
+  - Product Resource Group
+  - Supportive Infrastructure RG
+
+**Backup Process Workflow:**
+1. **Onboarding:**
+   - BaaS Team defines Service Level Agreement (SLA)
+   - Application is onboarded to BaaS platform
+
+2. **Backup Characteristics:**
+   * Supports multiple cloud services (VMs, SQL, BLOB, S3, RDS)
+   * Storage tiers include:
+     - Cold Tier
+     - Archival Storage
+   * Backup features:
+     - Secure
+     - Immutable
+     - Encrypted
+     - Geo-replicated for disaster recovery
+
+3. **Backup Execution:**
+   - Orchestrated according to SLA-defined backup policy
+   - Backup metadata updated for future restoration
+   - Backups transitioned to Cold Tier for long-term retention
+
+4. **Disaster Recovery:**
+   - Backups geographically replicated to paired region
+   - Ensures data integrity and availability
+
+**Service Benefits:**
+* Single management interface across cloud platforms
+* Optimized cost and performance
+* Compliance with internal audit recommendations
+* Self-service restoration capabilities
+
+**Relevant ServiceNow Links:**
+* [BaaS Onboarding](https://cbre.service-now.com/com.glideapp.servicecatalog_cat_item_view.do?v=1&sysparm_id=4fc54e1b874b96d880057666dabb357e)
+* [BaaS Restoration](https://cbre.service-now.com/com.glideapp.servicecatalog_cat_item_view.do?v=1&sysparm_id=4fc54e1b874b96d880057666dabb357e)
+
+**Reference Documents:**
+* [BaaS Architecture Diagram](https://cbre.sharepoint.com/sites/intra-TS-BaaS/SiteAssets/SitePages/backup_process/3575565417-Azure_Backup.jpg)
+* [BaaS Department Home](https://cbre.sharepoint.com/sites/intra-TS-BaaS/SitePages/DepartmentHome.aspx)",15.484
+Is there a RACI for this service?,"For BaaS service, the RACI matrix shows clear team responsibilities. The BaaS Platform Team is Responsible (R) for most technical aspects - network configuration, infrastructure provisioning, application onboarding, backup policies, monitoring, compliance, and all backup and recovery operations.
+
+D&T Product Owner is Responsible (R) for application onboarding alongside the Platform Team, and Informed (I) about technical decisions.
+
+Business Product Owner is mostly Consulted (C) or Informed (I), providing business input without direct implementation responsibility.
+
+GCSO serves primarily in Consultative (C) roles for security and compliance matters, and is kept Informed (I) about technical operations.
+
+This structure ensures clear accountability while maintaining appropriate collaboration across teams for successful BaaS implementation.","=== Confluence & SharePoint Results ===
+Content: 
+Description: Finally, click the Add panel button again and go through creating a final panel. This panel will be titled Outbound Request Count, won't need any special units, and will use the following query: aliasByNode(stats_counts.web-api.outbound.\*.request-count, 3)
+Click the back button a final time to return to the dashboard editor screen. In the upper-right corner of the screen, click the Save dashboard icon, give the dashboard a name of Web API Overview, and save the dashboard. The dashboard is now saved and will have a URL associated with it. If you were using an instance of Grafana per- manently installed for your organization, this URL would be a permalink that you could provide to others and would make a great addition to your project's README.
+Feel free to drag the panels around and resize them until you get something that is aesthetically pleasing. In the upper right corner of the screen, you can also change the time range. Set it to ""Last 15 minutes,"" since you likely don't have data much older than that. Once you're done, your dashboard should look something like Figure 4-5.
+<figure>
+<figure_type>CHART</figure_type>
+Title: Outbound Request Count
+The graph shows the outbound request count for a recipe-api service over a 15-minute period. The metric remains at 0 from 15:20 to approximately 15:27, then suddenly jumps to around 50 requests and maintains that level until about 15:32, where it drops back to near 0. The graph displays a clear step pattern with a sustained period of high activity followed by a return to baseline.
+| timestamp | recipe-api_requests |
+| - | - | 
+| 15:20 | 0 |
+| 15:25 | 0 |
+| 15:27 | 50 |
+| 15:30 | 50 |
+| 15:32 | 0 |
+</figure>
+<figure>
+<figure_type>CHART</figure_type>
+Title: Grafana Dashboard Metrics for Recipe API
+The Grafana dashboard displays three key metrics for a recipe-api service over a time period from approximately 15:18 to 15:32. The dashboard includes three panels: 1) Outbound Request Count showing request volume reaching up to 60 requests, 2) Outbound Service Timing displaying response times with peaks around 2.5ms, and 3) Incoming Status Codes panel showing the distribution of HTTP status codes (200 and 500) over time. The metrics indicate some spikes in response times and a mix of successful (200) and error (500) responses.
+| timestamp | metric_type | value |
+| - | - | - | 
+| 15:20 | outbound_requests | 40 |
+| 15:25 | outbound_requests | 45 |
+| 15:30 | outbound_requests | 20 |
+| 15:20 | service_timing_ms | 0.5 |
+| 15:25 | service_timing_ms | 1.0 |
+| 15:30 | service_timing_ms | 2.5 |
+| 15:20 | status_200_count | 30 |
+| 15:25 | status_200_count | 40 |
+| 15:30 | status_200_count | 20 |
+| 15:20 | status_500_count | 10 |
+| 15:25 | status_500_count | 5 |
+| 15:30 | status_500_count | 0 |
+</figure>
+<figure>
+<figure_type>CHART</figure_type>
+Figure 4-5. Completed Grafana dashboardTitle: Grafana Dashboard Metrics for Recipe API
+This Grafana dashboard displays three key metrics for a recipe-api service over a time period from approximately 15:18 to 15:32. The dashboard consists of three panels:
+1. Outbound Request Count: Shows request volume fluctuating between 0-60 requests
+2. Outbound Service Timing: Displays response times ranging from 0.5ms to 2.5ms
+3. Incoming Status Codes: Tracks HTTP status codes 200 (success) and 500 (error), with 200 responses showing a significant spike between 15:26 and 15:30, reaching around 40 requests, while 500 errors maintain a relatively constant low level throughout the period.
+| timestamp | status_200 | status_500 |
+| - | - | - | 
+| 15:18 | 5 | 8 |
+| 15:20 | 5 | 8 |
+| 15:22 | 5 | 8 |
+| 15:24 | 5 | 8 |
+| 15:26 | 40 | 8 |
+| 15:28 | 40 | 8 |
+| 15:30 | 40 | 8 |
+| 15:32 | 5 | 8 |
+</figure>
+## Node.js Health Indicators
+There is some generic health information about a running Node.js process that is also worth collecting for the dashboard. Modify your *web-api/consumer-http-metrics.js* file by adding the code from Example 4-8 to the end of the file. Restart the service and keep an eye on the data that is being generated. These new metrics represent values that can increase or decrease over time and are better represented as *Gauges.*
+*Example 4-8. web-api/consumer-http-metrics.js (second half)*
+**const** v8 = require('v8'); **const** fs = require('fs');
+**108**
+**Chapter 4: Observability**
+
+Link: https://cbre-jira.atlassian.net/wiki/pages/viewpageattachments.action?pageId=134352059&preview=%2F134352059%2F134352183%2Fdistributedsystemswithnodejs.pdf
+---
+Content: # *2.2.6 Ensure RPC is not installed (Automated)* ## Profile Applicability: - Level 1- - Server - Level 1 - Workstation ## Description: Remote Procedure Call (RPC) is a method for creating low level client server applications across different system architectures. It requires an RPC compliant client listening on a network port. The supporting package is rpcbind."" ## Rationale: If RPC is not required, it is recommended that this services be removed to reduce the remote attack surface. ## Audit: Run the following command to verify rpcbind is not installed: dpkg -s rpcbind \| grep -E 1 (Status: : \| not installed) 1 dpkg-query: package 'rpcbind' is not installed and no information is available ## Remediation: Run the following command to remove rpcbind: # apt purge rpcbind ## CIS Controls: Version 7 ## 9.2 Ensure Only Approved Ports, Protocols and Services Are Running Ensure that only network ports, protocols, and services listening on a system with validated business needs, are running on each system. 169 I Page
+Description: 
+Link: https://cbre-jira.atlassian.net/wiki/pages/viewpageattachments.action?pageId=39600662&preview=%2F39600662%2F39604655%2FCIS_Ubuntu_Linux_16.04_LTS_Benchmark_v2.0.0.pdf
+---
+
+=== ServiceNow Reference Links ===
+Content: ### **GCP Requests** Currently there is no dedicated form to request a GCP Project, or report GCP issues, please raise a General IT Request, with the following info: ### **Cloud Assistant Friendly Content** This content is intended to enhance the ingestion quality of the Cloud Assistant Bot, ensuring more accurate responses when processing SNOW form links
+Link: https://cbre-jira.atlassian.net/wiki/spaces/CLOUD/pages/39605931/Cloud+Platform+Request+Forms
+---
+Content: quality of the Cloud Assistant Bot, ensuring more accurate responses when processing SNOW form links
+
+| | |
+| - | - |
+| **Type** | **Form** *(link to description & use below)* |
+| AWS Account Request AWS Account Request form allows users to request new AWS accounts with required approvals. | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=e772a202dbd5505021d45fc4e29619e1 |
+| AWS Account Decommission Decommission existing AWS accounts C*urrently Only Non-prod, Dev and Sandbox supported* | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=9ce28d861b19de1458b54047b04bcb22 |
+| AWS Account Tags Update Update AWS Cloud Account Level Tags | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=c89fcc3f1b828654a3e4773bdc4bcb02 |
+| Request a new Azure Resource group Request a new Azure Resource Group (RG) | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=985693958714251053e174c6dabb35cd |
+| Cloud Assistance Azure & AWS Platform general support requests | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=9435de46db2a3704cdb9d2984b9619b2 |
+| Cloud Access Request This form is for requesting access to an existing AWS account or Azure Resource Group | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=f33b560adbea3704cdb9d2984b961987 |
+| Cloud Health read access form Request Read-only access to CloudHealth | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=a3d5e783db311c5009d03fd3e2961969 |
+| GCP Requests Currently there is no dedicated form to request a GCP Project, or report GCP issues, please raise a General IT Request | https://cbre.service-now.com/esc?id=sc\_cat\_item&table=sc\_cat\_item&sys\_id=a4d4eb563ce491803f4d47212e89e27a&searchTerm=General%20IT%20Request |
+| ECMP Tenancy Request from Request a new tenancy in Enterprise Container Management Platform (ECMP) | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=5a9e1f1a8723dd1053e174c6dabb352a |
+| ECMP Access Request Request access to ECMP | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=468fd76b87506d90dd59ba2e8bbb35d8 |
+| Modify ECMP Project Request an increase project quota in ECMP | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=f8cd43f01b39e950a14d844fdd4bcb50 |
+| ECMP Operations ECMP general support requests | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=d1229e96873af914cc57c88e8bbb35e9 |
+| New Terraform Enterprise Team Request a new TFE Team | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=2235c46e1b45069044b664abbc4bcb9e |
+| New Terraform Enterprise Project Request a new TFE Project | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=9d51dc401bdd8ad044b664abbc4bcbbb |
+| Terraform Enterprise Team Access Request access to an existing TFE Team | https://cbre.service-now.com/nav\_to.do?uri=%2Fcom.glideapp.servicecatalog\_cat\_item\_view.do%3Fv%3D1%26sysparm\_id%3D747ebbf21b6f825058b54047b04bcb8a%26sysparm\_link\_parent%3D5924d0c2dbf63b8ccdb9d2984b9619a2%26sysparm\_catalog%3De0d08b13c3330100c8b837659bba8fb4%26sysparm\_catalog\_view%3Dcatalog\_default%26sysparm\_view%3Dcatalog\_default |
+| BaaS Onboarding For initial onboarding requests to the BaaS platform | https://cbre.service-now.com/com.glideapp.servicecatalog\_cat\_item\_view.do?v=1&sysparm\_id=4fc54e1b874b96d880057666dabb357e |
+| BaaS Restoration Any restoration requests for the BaaS platform | https://cbre.service-now.com/com.glideapp.servicecatalog\_cat\_item\_view.do?v=1&sysparm\_id=4fc54e1b874b96d880057666dabb357e |
+| Sendgrid Sub User Request a Sub User on the CBE Sendgrid platform | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=dd27306a1b4296907e0b6287624bcb2d |
+| **\*General Identity Management Request** Use this form to register an application in Entra ID (Azure AD) for Single Sign-On (SSO) | https://cbre.service-now.com/esc?id=ep\_sc\_cat\_item&sys\_id=5eff71761ba67154b065542d1e4bcb81&sysparm\_domain\_restore=false&sysparm\_stack=no |
+| **\*Enterprise Architecture** Use this form to initiate the triage process for a GenAI application | https://cbre.service-now.com/esc?id=sc\_cat\_item&table=sc\_cat\_item&sys\_id=aa13290b1bf758503d88caad1e4bcb54&searchTerm=%20Enterprise%20Architecture%20Service%20Request |
+| **\*ITSM** Use this form to request a privileged account for accessing cloud resources | https://cbre.service-now.com/esc?id=sc\_cat\_item&table=sc\_cat\_item&sys\_id=fff4e7963ce491803f4d47212e89e23d&searchTerm=it%20access%20request |
+Link: https://cbre-jira.atlassian.net/wiki/spaces/CLOUD/pages/39605931/Cloud+Platform+Request+Forms
+---
+","**RACI Matrix for Cloud Service**
+
+I found a detailed RACI (Responsible, Accountable, Consulted, Informed) matrix for the Enterprise Container Management Platform (ECMP) from the Confluence link: https://cbre-jira.atlassian.net/wiki/spaces/CLOUD/pages/39598329/RACI+WIP
+
+**Key Highlights:**
+- The matrix covers various roles including:
+  - Cloud Platform Engineering
+  - Platform Ops
+  - Cloud Architecture
+  - GCSO
+  - Network and Infra
+  - Segment Leads
+  - Rafay
+  - Cloud Service Providers (Microsoft/AWS)
+  - FinOps
+
+**Example RACI Breakdown:**
+- **Vision Development**: 
+  - Responsible (R): Cloud Platform Engineering, Platform Ops
+  - Accountable (A): Cloud Architecture
+  - Consulted (C): GCSO, Network and Infra
+  - Informed (I): Segment Leads, Rafay, FinOps
+
+The matrix provides a comprehensive view of responsibilities across different critical activities in cloud service management, including platform capabilities, cluster management, and onboarding processes.
+
+**Source:** 
+- [RACI Matrix (Confluence)](https://cbre-jira.atlassian.net/wiki/spaces/CLOUD/pages/39598329/RACI+WIP)",13.589
+What is the SLA for a restoration request?,"The SLA for restoration requests varies by application type and tier. Production apps range from 1 hour (Tier 1) to 1+ days (Tiers 3-4), while non-production apps range from 1 business day (Tier 1) to 1+ business days (Tiers 2-4).","=== Confluence & SharePoint Results ===
+Content: what we expect from a service and begin to collect related data to measure what we have in reality, it usually turns out that the service is not doing as well as we believed it was doing. Measured results are different because, without an SLA, we can count only these problems that somebody complained about. And in our mind, the service is doing well because there were only a few complaints in the past that appear to have been successfully resolved. The problem is that we did not receive complaints about all of the issues we actually have and, in reality, there might be a thousand cases in which end users just leave silently with a bad taste in their mouth. ## Nontechnical Solutions Technical solutions are not the limit of an SLA's potential. SLAs will give you a hand in other fields as well. The SLA determines, for instance, the right time to hand a new service over to the SRE team to support. This can be as simple as, ""If a product meets expectations (i.e., does not violate an SLA), the product is ready; otherwise, it is not."" When we talk about the handover procedures, the first thing that comes to mind is a big checklist with dozens of bullet points. It covers all possible aspects of the service, from architecture decisions and comprehensive administration documentation to monitoring alarms and troubleshooting runbooks. However, having all these bullets checked hardly gives you a strong sense of confidence that it is ready to be taken over. Unless you are freezing all activities except transition preparations, that is a very unusual thing to do; you will never be 100% sure that there will be no unpleasant sur- prises. Consider the following. All new software projects will have some prerequisites long before they pass architecture review and a couple of proof-of-concept models have been built. When it is believed that an application is ready to be officially launched and begin serving live production traffic, both SLA and SLO counters are reset⁴ and start to collect the real data. This is the starting point for the service condition meas- ure. Because the SLA defines statements over time (the frequently used period is one calendar year), the project should last in this state a significant portion of this time (several months or a quarter) to collect enough data points that confirm that the ser- vice is stable enough and that there are no agreement violation risks. If we add an ""expectations reaching"" goal as an additional checklist point along with the alarms limitations (amount of alarms for a service during the time period; e.g., ""No more than one alarm per two weeks""), we will be much more confident that ser- 4 You can set SLAs and SLOs for all environments (dev/test/prod), but they all will show the condition of the particular environment each. The metric might be the same for every environment, but values will be unique. When we launch a service, we reset all counters so that we avoid influences from the prelaunch data. **136** **Chapter 9: From SysAdmin to SRE in 8,963 Words**
+Description: 
+Link: https://cbre-jira.atlassian.net/wiki/pages/viewpageattachments.action?pageId=134352059&preview=%2F134352059%2F134352159%2Fseekingsre.pdf
+---
+Content: 
+Description: SLA ## Production Applications | Application Recovery Tier | SLA Acknowledgement Time | |-|-| | Tier 1 | <=1 Hour\* | | Tier 2 | <=1 day | | Tier 3 | <=1+ day | | Tier 4 | <= 1+ day | ## NON-Production Applications | Application Recovery Tier | SLA Acknowledgement Time | |-|-| | Tier 1 | <=1 Business day | | Tier 2 | <=1+ Business days | | Tier 3 | <=1+ Business days | | Tier 4 | <= 1+ Business days |
+Link: https://cbre.sharepoint.com/sites/intra-TS-BaaS/SiteAssets/SitePages/sla/72846510-SLA_BaaS.JPG
+---
+
+=== ServiceNow Reference Links ===
+Content: ### **GCP Requests** Currently there is no dedicated form to request a GCP Project, or report GCP issues, please raise a General IT Request, with the following info: ### **Cloud Assistant Friendly Content** This content is intended to enhance the ingestion quality of the Cloud Assistant Bot, ensuring more accurate responses when processing SNOW form links
+Link: https://cbre-jira.atlassian.net/wiki/spaces/CLOUD/pages/39605931/Cloud+Platform+Request+Forms
+---
+Content: quality of the Cloud Assistant Bot, ensuring more accurate responses when processing SNOW form links
+
+| | |
+| - | - |
+| **Type** | **Form** *(link to description & use below)* |
+| AWS Account Request AWS Account Request form allows users to request new AWS accounts with required approvals. | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=e772a202dbd5505021d45fc4e29619e1 |
+| AWS Account Decommission Decommission existing AWS accounts C*urrently Only Non-prod, Dev and Sandbox supported* | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=9ce28d861b19de1458b54047b04bcb22 |
+| AWS Account Tags Update Update AWS Cloud Account Level Tags | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=c89fcc3f1b828654a3e4773bdc4bcb02 |
+| Request a new Azure Resource group Request a new Azure Resource Group (RG) | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=985693958714251053e174c6dabb35cd |
+| Cloud Assistance Azure & AWS Platform general support requests | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=9435de46db2a3704cdb9d2984b9619b2 |
+| Cloud Access Request This form is for requesting access to an existing AWS account or Azure Resource Group | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=f33b560adbea3704cdb9d2984b961987 |
+| Cloud Health read access form Request Read-only access to CloudHealth | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=a3d5e783db311c5009d03fd3e2961969 |
+| GCP Requests Currently there is no dedicated form to request a GCP Project, or report GCP issues, please raise a General IT Request | https://cbre.service-now.com/esc?id=sc\_cat\_item&table=sc\_cat\_item&sys\_id=a4d4eb563ce491803f4d47212e89e27a&searchTerm=General%20IT%20Request |
+| ECMP Tenancy Request from Request a new tenancy in Enterprise Container Management Platform (ECMP) | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=5a9e1f1a8723dd1053e174c6dabb352a |
+| ECMP Access Request Request access to ECMP | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=468fd76b87506d90dd59ba2e8bbb35d8 |
+| Modify ECMP Project Request an increase project quota in ECMP | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=f8cd43f01b39e950a14d844fdd4bcb50 |
+| ECMP Operations ECMP general support requests | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=d1229e96873af914cc57c88e8bbb35e9 |
+| New Terraform Enterprise Team Request a new TFE Team | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=2235c46e1b45069044b664abbc4bcb9e |
+| New Terraform Enterprise Project Request a new TFE Project | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=9d51dc401bdd8ad044b664abbc4bcbbb |
+| Terraform Enterprise Team Access Request access to an existing TFE Team | https://cbre.service-now.com/nav\_to.do?uri=%2Fcom.glideapp.servicecatalog\_cat\_item\_view.do%3Fv%3D1%26sysparm\_id%3D747ebbf21b6f825058b54047b04bcb8a%26sysparm\_link\_parent%3D5924d0c2dbf63b8ccdb9d2984b9619a2%26sysparm\_catalog%3De0d08b13c3330100c8b837659bba8fb4%26sysparm\_catalog\_view%3Dcatalog\_default%26sysparm\_view%3Dcatalog\_default |
+| BaaS Onboarding For initial onboarding requests to the BaaS platform | https://cbre.service-now.com/com.glideapp.servicecatalog\_cat\_item\_view.do?v=1&sysparm\_id=4fc54e1b874b96d880057666dabb357e |
+| BaaS Restoration Any restoration requests for the BaaS platform | https://cbre.service-now.com/com.glideapp.servicecatalog\_cat\_item\_view.do?v=1&sysparm\_id=4fc54e1b874b96d880057666dabb357e |
+| Sendgrid Sub User Request a Sub User on the CBE Sendgrid platform | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=dd27306a1b4296907e0b6287624bcb2d |
+| **\*General Identity Management Request** Use this form to register an application in Entra ID (Azure AD) for Single Sign-On (SSO) | https://cbre.service-now.com/esc?id=ep\_sc\_cat\_item&sys\_id=5eff71761ba67154b065542d1e4bcb81&sysparm\_domain\_restore=false&sysparm\_stack=no |
+| **\*Enterprise Architecture** Use this form to initiate the triage process for a GenAI application | https://cbre.service-now.com/esc?id=sc\_cat\_item&table=sc\_cat\_item&sys\_id=aa13290b1bf758503d88caad1e4bcb54&searchTerm=%20Enterprise%20Architecture%20Service%20Request |
+| **\*ITSM** Use this form to request a privileged account for accessing cloud resources | https://cbre.service-now.com/esc?id=sc\_cat\_item&table=sc\_cat\_item&sys\_id=fff4e7963ce491803f4d47212e89e23d&searchTerm=it%20access%20request |
+Link: https://cbre-jira.atlassian.net/wiki/spaces/CLOUD/pages/39605931/Cloud+Platform+Request+Forms
+---
+","**BaaS Restoration SLA Details**
+
+**Restoration Process:**
+- Currently, restoration is managed exclusively by the centralized team
+- Product teams must submit a ServiceNow ticket to restore backups
+- A self-service restoration model is planned to be implemented in the coming months
+
+**Backup Frequency and Retention Tiers:**
+| Tier | Backup Frequency | Retention |
+|------|-----------------|-----------|
+| Tier 1 | Every 1 hour | Specified by product team |
+| Tier 2 | Every 4 hours | Specified by product team |
+| Tier 3 | Every 24 hours | Specified by product team |
+| Tier 4 | Every 1 week | Specified by product team |
+
+**Exceptions and Limitations:**
+- Azure SQL and Managed Instance: 
+  - Immutable backups limited to 24-hour frequency
+  - Mutable backups follow CBRE tier timeline
+  - Full support roadmapped for CY'24
+
+- AWS RDS:
+  - Backups retained within AWS accounts
+  - Transition to immutable vault planned by end of year
+
+- Unstructured Data (S3, Azure Blob, Azure Files):
+  - Most frequent backups possible every 12 hours
+  - Default Recovery Point Objective (RPO) is 12 hours
+  - Can be adjusted based on application needs
+
+**ServiceNow Reference:**
+- [BaaS Restoration Form](https://cbre.service-now.com/com.glideapp.servicecatalog_cat_item_view.do?v=1&sysparm_id=4fc54e1b874b96d880057666dabb357e)
+
+**Additional Source:**
+- [BaaS Restoration Process Details](https://cbre.sharepoint.com/sites/intra-TS-BaaS/SitePages/backup_restoration_process.aspx)",11.399
+What are the latest changes that happened to the tagging?,"The last tagging policy was updated on May 15, 2025 (Revision 4.5). This revision realigns cloud tagging requirements to ensure consistency with APM data.
+
+As part of this update, the following four tags must exactly match their corresponding values in the APM platform:
+
+[BusinessTower] – Must match the APM tower value exactly
+[LineOfBusiness] – Must match the APM Line of Business (LOB) value exactly
+[Service] – Must match the APM application name exactly
+[APMNO] – Must match the APM APMNO value exactly","=== Confluence & SharePoint Results ===
+Content: We would like to inform you about upcoming changes to our Azure and AWS tagging standards. These changes are aimed at aligning with the new Application Portfolio Management (APM) platform and recent adjustments in our segment organization. By implementing these updates, we aim to enhance resource management and ensure better alignment with our business objectives.    Key Changes  · New Tags: BusinessTower, LineOfBusiness, Service, APMNO  · Retirement Tags: APMID, BusinessSegment  · Unchanged Tags: SupportGroup, FMC, BillingApprover, Environment                								                      						Example of New Tags                						Note: Tags must be written to the exact specification as listed in the guidelines.        				                								                      				Note:  BusinessTower is called Managing Organization in the APM system.  		What's Next  · Review the updated CBRE Tagging Standards Document  · Look out for invites to upcoming Office Hours/Q&A sessions.                						We encourage all teams to review these updates in preparation for the tag changes that will go live on Friday, May 16.    If you have any urgent questions, please contact the FinOps Team.                								                      						Quick links  · CBRE Tagging Standards and Guidelines  · APM SharePoint Site  · APM Records Dashboard
+Description: 
+Link: https://cbre.sharepoint.com/sites/intra-TS-CloudPlatformEngineering/Shared%20Documents/Shared%20Documents/Changes%20to%20cloud%20tagging%202025-05.docx?d=we521db0bfaea47038badb9a5203a88e2
+---
+Content: 
+Description: Someone eventually needs to understand the root cause of this issue, and correlation analysis can be used to further refine your understanding of what was happening. Similar to the analysis described in the previous chapter, you might compare slow requests from the last few minutes to faster requests from before the regression. This can identify specific operations that led to higher latency in the new version and help the team responsible for the inventory service understand how to address them.
+Aggregate analysis can also help to identify more subtle changes in service perfor- mance. When comparing two sets of traces, we can look at the latency contributions related to arbitrary tags, operations, and services and how those contributions changed over time.
+One method for doing so is to consider how the critical path changes between the baseline and regression sets. In this method, the critical path is computed for each trace. (The definition of the ""critical path"" is covered in Chapter 8.) The average con- tribution for each service and operation is then determined for each of the two sets. Services and operations are ranked by the differences between these two averages.
+Table 9-2 shows an example of this method. In this example, the inventory service continues to have a big impact on the changes in performance. Here the write-cache operation contributes more than five times more to the critical path in the regression set than in the baseline set. This is strong evidence that this operation is the cause of the performance regression.
+*Table 9-2. Critical path contributions in baseline and regression traces*
+| Service/Operation | Baseline | Regression | Change |
+|-|-|-|-|
+| inventory/write-cache | 63.1 ms | 368 ms | +305 ms |
+| inventory-db/update | 1.75 ms | 2.26 ms | +516 ms |
+| memcached/set | 4.94 ms | 4.71 ms | -230 ms |
+| inventory/update-inventor | 15.2 ms | 14.8 ms | -470 ms |
+| inventory/database-update | 32 ms | 30.6 ms | -1.4 ms |
+Another method for understanding performance changes is to consider every tag found in either set of traces. For each tag, all spans in each set on which that tag appears are enumerated and the average duration of those spans is computed for each set. Tags are then ranked based on the difference between those two averages.
+Table 9-3 shows an example of what this might look like. Four tags are shown with changes in average duration between a few hundred milliseconds and more than a second. The tag item-time: new undergoes the biggest change between the baseline set and the regression, moving from 114 ms to 1.24 seconds. This would be a great place to start looking for what code changed between releases. In other cases, these results might indicate a change not in the application itself but in the behavior of
+**Approaches to Restoring Performance**
+**197**
+
+Link: https://cbre-jira.atlassian.net/wiki/pages/viewpageattachments.action?pageId=134352059&preview=%2F134352059%2F134417703%2Fdistributedtracinginpractice.pdf
+---
+
+=== ServiceNow Reference Links ===
+Content: ### **GCP Requests** Currently there is no dedicated form to request a GCP Project, or report GCP issues, please raise a General IT Request, with the following info: ### **Cloud Assistant Friendly Content** This content is intended to enhance the ingestion quality of the Cloud Assistant Bot, ensuring more accurate responses when processing SNOW form links
+Link: https://cbre-jira.atlassian.net/wiki/spaces/CLOUD/pages/39605931/Cloud+Platform+Request+Forms
+---
+Content: quality of the Cloud Assistant Bot, ensuring more accurate responses when processing SNOW form links
+
+| | |
+| - | - |
+| **Type** | **Form** *(link to description & use below)* |
+| AWS Account Request AWS Account Request form allows users to request new AWS accounts with required approvals. | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=e772a202dbd5505021d45fc4e29619e1 |
+| AWS Account Decommission Decommission existing AWS accounts C*urrently Only Non-prod, Dev and Sandbox supported* | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=9ce28d861b19de1458b54047b04bcb22 |
+| AWS Account Tags Update Update AWS Cloud Account Level Tags | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=c89fcc3f1b828654a3e4773bdc4bcb02 |
+| Request a new Azure Resource group Request a new Azure Resource Group (RG) | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=985693958714251053e174c6dabb35cd |
+| Cloud Assistance Azure & AWS Platform general support requests | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=9435de46db2a3704cdb9d2984b9619b2 |
+| Cloud Access Request This form is for requesting access to an existing AWS account or Azure Resource Group | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=f33b560adbea3704cdb9d2984b961987 |
+| Cloud Health read access form Request Read-only access to CloudHealth | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=a3d5e783db311c5009d03fd3e2961969 |
+| GCP Requests Currently there is no dedicated form to request a GCP Project, or report GCP issues, please raise a General IT Request | https://cbre.service-now.com/esc?id=sc\_cat\_item&table=sc\_cat\_item&sys\_id=a4d4eb563ce491803f4d47212e89e27a&searchTerm=General%20IT%20Request |
+| ECMP Tenancy Request from Request a new tenancy in Enterprise Container Management Platform (ECMP) | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=5a9e1f1a8723dd1053e174c6dabb352a |
+| ECMP Access Request Request access to ECMP | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=468fd76b87506d90dd59ba2e8bbb35d8 |
+| Modify ECMP Project Request an increase project quota in ECMP | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=f8cd43f01b39e950a14d844fdd4bcb50 |
+| ECMP Operations ECMP general support requests | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=d1229e96873af914cc57c88e8bbb35e9 |
+| New Terraform Enterprise Team Request a new TFE Team | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=2235c46e1b45069044b664abbc4bcb9e |
+| New Terraform Enterprise Project Request a new TFE Project | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=9d51dc401bdd8ad044b664abbc4bcbbb |
+| Terraform Enterprise Team Access Request access to an existing TFE Team | https://cbre.service-now.com/nav\_to.do?uri=%2Fcom.glideapp.servicecatalog\_cat\_item\_view.do%3Fv%3D1%26sysparm\_id%3D747ebbf21b6f825058b54047b04bcb8a%26sysparm\_link\_parent%3D5924d0c2dbf63b8ccdb9d2984b9619a2%26sysparm\_catalog%3De0d08b13c3330100c8b837659bba8fb4%26sysparm\_catalog\_view%3Dcatalog\_default%26sysparm\_view%3Dcatalog\_default |
+| BaaS Onboarding For initial onboarding requests to the BaaS platform | https://cbre.service-now.com/com.glideapp.servicecatalog\_cat\_item\_view.do?v=1&sysparm\_id=4fc54e1b874b96d880057666dabb357e |
+| BaaS Restoration Any restoration requests for the BaaS platform | https://cbre.service-now.com/com.glideapp.servicecatalog\_cat\_item\_view.do?v=1&sysparm\_id=4fc54e1b874b96d880057666dabb357e |
+| Sendgrid Sub User Request a Sub User on the CBE Sendgrid platform | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=dd27306a1b4296907e0b6287624bcb2d |
+| **\*General Identity Management Request** Use this form to register an application in Entra ID (Azure AD) for Single Sign-On (SSO) | https://cbre.service-now.com/esc?id=ep\_sc\_cat\_item&sys\_id=5eff71761ba67154b065542d1e4bcb81&sysparm\_domain\_restore=false&sysparm\_stack=no |
+| **\*Enterprise Architecture** Use this form to initiate the triage process for a GenAI application | https://cbre.service-now.com/esc?id=sc\_cat\_item&table=sc\_cat\_item&sys\_id=aa13290b1bf758503d88caad1e4bcb54&searchTerm=%20Enterprise%20Architecture%20Service%20Request |
+| **\*ITSM** Use this form to request a privileged account for accessing cloud resources | https://cbre.service-now.com/esc?id=sc\_cat\_item&table=sc\_cat\_item&sys\_id=fff4e7963ce491803f4d47212e89e23d&searchTerm=it%20access%20request |
+Link: https://cbre-jira.atlassian.net/wiki/spaces/CLOUD/pages/39605931/Cloud+Platform+Request+Forms
+---
+","**Latest Tagging Changes**
+
+Based on the recent documentation, here are the key updates to the tagging system:
+
+**New Tags Introduced:**
+- `BusinessTower` (Note: Called ""Managing Organization"" in the APM system)
+- `LineOfBusiness`
+- `Service`
+- `APMNO`
+
+**Tags Being Retired:**
+- `APMID`
+- `BusinessSegment`
+
+**Unchanged Tags:**
+- `SupportGroup`
+- `FMC`
+- `BillingApprover`
+- `Environment`
+
+**Important Details:**
+- **Effective Date:** Friday, May 16
+- **Purpose:** Align with the new Application Portfolio Management (APM) platform and recent organizational changes
+
+**Next Steps:**
+1. Review the updated CBRE Tagging Standards Document
+2. Prepare for the tag changes going live on May 16
+3. Attend upcoming Office Hours/Q&A sessions
+
+**Additional Resources:**
+- [CBRE Tagging Standards and Guidelines](https://cbre.sharepoint.com/sites/intra-TS-CloudPlatformEngineering/Shared%20Documents/Shared%20Documents/Changes%20to%20cloud%20tagging%202025-05.docx?d=we521db0bfaea47038badb9a5203a88e2)
+- [APM SharePoint Site](not provided in the document)
+- [APM Records Dashboard](not provided in the document)
+
+**Contact:** For urgent questions, contact the FinOps Team
+
+**Relevant ServiceNow Form:**
+- [AWS Account Tags Update](https://cbre.service-now.com/esc?id=sc_cat_item&sys_id=c89fcc3f1b828654a3e4773bdc4bcb02)",10.05
+What is CloudHealth and tell me more about its capabilities.,"Cloud Health provides a single solution for multi-cloud reporting. CBRE teams can use Cloud Health to analyze their cloud spend and drill in to look at specific resources.
+There is no cost for teams to use Cloud Health.
+Cloud Health does have the ability to display some amortized cost, but most reports do not include the upfront purchases. The Global FinOps team recommends the use of your cloud providers portal to see the amortized cost data.
+Currently Cloud Health provides reports for Azure, AWS and GCP.
+Cloud Health does not include the shared Azure reallocation and AWS allocated fee cos","=== Confluence & SharePoint Results ===
+Content: # Overview Cloud Health provides a single solution for multi-cloud reporting. CBRE teams can use Cloud Health to analyze their cloud spend and drill in to look at specific resources. # ServiceNow Request Form To request access to Cloud Health click on the link below.. **Request read access to Cloud Health** # Resources **Introduction to CBRE CloudHealth 15 minute video** **How to see the Reserve Instance Cost for Virtual Servers in Azure** **2 ways to look at resource details.docx** **TechTalk video of CloudHealth** ](https://cbre-jira.atlassian.net/wiki/download/thumbnails/39587224/image2021-11-15_9-49-45.png?version=1&modificationDate=1636991385528&cacheVersion=1&api=v2&width=388&height=250) ![
+Description: 
+Link: https://cbre-jira.atlassian.net/wiki/spaces/CLOUD/pages/39587224/Cloud+Health
+---
+Content: 
+Description: # CloudHealth by vmware AWS	Azure	Google Cloud
+Link: https://cbre-jira.atlassian.net/wiki/pages/viewpageattachments.action?pageId=39587011&preview=%2F39587011%2F39587013%2Fimage2021-10-24_15-2-16.png
+---
+
+=== ServiceNow Reference Links ===
+Content: quality of the Cloud Assistant Bot, ensuring more accurate responses when processing SNOW form links
+
+| | |
+| - | - |
+| **Type** | **Form** *(link to description & use below)* |
+| AWS Account Request AWS Account Request form allows users to request new AWS accounts with required approvals. | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=e772a202dbd5505021d45fc4e29619e1 |
+| AWS Account Decommission Decommission existing AWS accounts C*urrently Only Non-prod, Dev and Sandbox supported* | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=9ce28d861b19de1458b54047b04bcb22 |
+| AWS Account Tags Update Update AWS Cloud Account Level Tags | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=c89fcc3f1b828654a3e4773bdc4bcb02 |
+| Request a new Azure Resource group Request a new Azure Resource Group (RG) | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=985693958714251053e174c6dabb35cd |
+| Cloud Assistance Azure & AWS Platform general support requests | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=9435de46db2a3704cdb9d2984b9619b2 |
+| Cloud Access Request This form is for requesting access to an existing AWS account or Azure Resource Group | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=f33b560adbea3704cdb9d2984b961987 |
+| Cloud Health read access form Request Read-only access to CloudHealth | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=a3d5e783db311c5009d03fd3e2961969 |
+| GCP Requests Currently there is no dedicated form to request a GCP Project, or report GCP issues, please raise a General IT Request | https://cbre.service-now.com/esc?id=sc\_cat\_item&table=sc\_cat\_item&sys\_id=a4d4eb563ce491803f4d47212e89e27a&searchTerm=General%20IT%20Request |
+| ECMP Tenancy Request from Request a new tenancy in Enterprise Container Management Platform (ECMP) | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=5a9e1f1a8723dd1053e174c6dabb352a |
+| ECMP Access Request Request access to ECMP | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=468fd76b87506d90dd59ba2e8bbb35d8 |
+| Modify ECMP Project Request an increase project quota in ECMP | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=f8cd43f01b39e950a14d844fdd4bcb50 |
+| ECMP Operations ECMP general support requests | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=d1229e96873af914cc57c88e8bbb35e9 |
+| New Terraform Enterprise Team Request a new TFE Team | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=2235c46e1b45069044b664abbc4bcb9e |
+| New Terraform Enterprise Project Request a new TFE Project | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=9d51dc401bdd8ad044b664abbc4bcbbb |
+| Terraform Enterprise Team Access Request access to an existing TFE Team | https://cbre.service-now.com/nav\_to.do?uri=%2Fcom.glideapp.servicecatalog\_cat\_item\_view.do%3Fv%3D1%26sysparm\_id%3D747ebbf21b6f825058b54047b04bcb8a%26sysparm\_link\_parent%3D5924d0c2dbf63b8ccdb9d2984b9619a2%26sysparm\_catalog%3De0d08b13c3330100c8b837659bba8fb4%26sysparm\_catalog\_view%3Dcatalog\_default%26sysparm\_view%3Dcatalog\_default |
+| BaaS Onboarding For initial onboarding requests to the BaaS platform | https://cbre.service-now.com/com.glideapp.servicecatalog\_cat\_item\_view.do?v=1&sysparm\_id=4fc54e1b874b96d880057666dabb357e |
+| BaaS Restoration Any restoration requests for the BaaS platform | https://cbre.service-now.com/com.glideapp.servicecatalog\_cat\_item\_view.do?v=1&sysparm\_id=4fc54e1b874b96d880057666dabb357e |
+| Sendgrid Sub User Request a Sub User on the CBE Sendgrid platform | https://cbre.service-now.com/esc?id=sc\_cat\_item&sys\_id=dd27306a1b4296907e0b6287624bcb2d |
+| **\*General Identity Management Request** Use this form to register an application in Entra ID (Azure AD) for Single Sign-On (SSO) | https://cbre.service-now.com/esc?id=ep\_sc\_cat\_item&sys\_id=5eff71761ba67154b065542d1e4bcb81&sysparm\_domain\_restore=false&sysparm\_stack=no |
+| **\*Enterprise Architecture** Use this form to initiate the triage process for a GenAI application | https://cbre.service-now.com/esc?id=sc\_cat\_item&table=sc\_cat\_item&sys\_id=aa13290b1bf758503d88caad1e4bcb54&searchTerm=%20Enterprise%20Architecture%20Service%20Request |
+| **\*ITSM** Use this form to request a privileged account for accessing cloud resources | https://cbre.service-now.com/esc?id=sc\_cat\_item&table=sc\_cat\_item&sys\_id=fff4e7963ce491803f4d47212e89e23d&searchTerm=it%20access%20request |
+Link: https://cbre-jira.atlassian.net/wiki/spaces/CLOUD/pages/39605931/Cloud+Platform+Request+Forms
+---
+Content: #### *Cloud Health read access form* ServiceNow Form
+Link: https://cbre-jira.atlassian.net/wiki/spaces/CLOUD/pages/39605931/Cloud+Platform+Request+Forms
+---
+","**What is CloudHealth?**
+
+CloudHealth is a comprehensive cloud management platform used by CBRE to aggregate and analyze cloud resources across multiple cloud providers. Here are its key capabilities:
+
+**1. Multi-Cloud Resource Management**
+- Aggregates data from multiple cloud providers into a single, searchable database
+- Simplifies tracking and locating cloud assets across different platforms
+
+**2. Asset Tracking and Search**
+- Allows users to search for assets across different cloud providers (AWS, Azure, etc.)
+- Provides detailed information about cloud resources, including:
+  - Resource location
+  - Owner tags
+  - Specific resource details
+
+**3. Cloud Spend Analysis**
+- Enables teams to analyze cloud expenditure
+- Provides drill-down capabilities to examine specific resources
+- Helps in understanding and optimizing cloud spending
+
+**How to Access CloudHealth**
+
+**Prerequisites:**
+- Regular AD account with email address configured
+- Complete CloudHealth onboarding
+
+**Login Process:**
+1. Browse to the CloudHealth login page
+2. Authenticate using your regular AD account
+3. Navigate through cloud provider tabs (AWS, Azure, etc.)
+
+**Searching for Assets:**
+1. Select the cloud provider (e.g., AWS)
+2. Click **Assets** in the left-side navigation
+3. Choose the specific resource type (e.g., EC2 Instances)
+4. Use filters to locate specific resources
+
+**Access Request**
+To request read-only access to CloudHealth, use the following ServiceNow form:
+- **CloudHealth Read Access**: [Request Access](https://cbre.service-now.com/esc?id=sc_cat_item&sys_id=a3d5e783db311c5009d03fd3e2961969)
+
+**Additional Resources:**
+- **Introduction Video**: 15-minute CloudHealth overview
+- **TechTalk Video**: Detailed CloudHealth exploration
+
+**Source Documents:**
+- [CloudHealth Overview - Confluence](https://cbre-jira.atlassian.net/wiki/spaces/CLOUD/pages/39587224/Cloud+Health)
+- [Locating Cloud Assets - Confluence](https://cbre-jira.atlassian.net/wiki/spaces/CLOUD/pages/39587011/Locating+Cloud+Assets)",10.279
